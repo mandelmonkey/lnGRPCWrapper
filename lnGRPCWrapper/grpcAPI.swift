@@ -151,6 +151,36 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
+    @objc public func exportAllChannelBackups(callback: @escaping (String?,String?) -> Void) {
+        do {
+            
+            _ = try rpc.exportAllChannelBackups(Lnrpc_ChanBackupExportRequest()) { response, callResult in
+                
+                do{
+                    
+                    if(response == nil){
+                        callback(String(callResult.statusCode.rawValue),callResult.statusMessage!)
+                        
+                    }else{
+                        let res = try response!.jsonString();
+                        
+                        callback(res,nil)
+                    }
+                    
+                }
+                catch{
+                    
+                    callback(nil,error.localizedDescription)
+                }
+                
+                
+            }
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+        }
+    }
+    
     @objc public func getWalletBalance(callback: @escaping (String?,String?) -> Void) {
         do {
             _ = try rpc.walletBalance(Lnrpc_WalletBalanceRequest()) { response, callResult in

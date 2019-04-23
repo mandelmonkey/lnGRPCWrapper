@@ -20,8 +20,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import Foundation
 import Dispatch
+import Foundation
 import SwiftGRPC
 import SwiftProtobuf
 
@@ -53,70 +53,121 @@ fileprivate final class Lnrpc_WalletUnlockerChangePasswordCallBase: ClientCallUn
 /// Instantiate Lnrpc_WalletUnlockerServiceClient, then call methods of this protocol to make API calls.
 internal protocol Lnrpc_WalletUnlockerService: ServiceClient {
   /// Synchronous. Unary.
-  func genSeed(_ request: Lnrpc_GenSeedRequest) throws -> Lnrpc_GenSeedResponse
+  func genSeed(_ request: Lnrpc_GenSeedRequest, metadata customMetadata: Metadata) throws -> Lnrpc_GenSeedResponse
   /// Asynchronous. Unary.
-  func genSeed(_ request: Lnrpc_GenSeedRequest, completion: @escaping (Lnrpc_GenSeedResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerGenSeedCall
+  @discardableResult
+  func genSeed(_ request: Lnrpc_GenSeedRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_GenSeedResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerGenSeedCall
 
   /// Synchronous. Unary.
-  func initWallet(_ request: Lnrpc_InitWalletRequest) throws -> Lnrpc_InitWalletResponse
+  func initWallet(_ request: Lnrpc_InitWalletRequest, metadata customMetadata: Metadata) throws -> Lnrpc_InitWalletResponse
   /// Asynchronous. Unary.
-  func initWallet(_ request: Lnrpc_InitWalletRequest, completion: @escaping (Lnrpc_InitWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerInitWalletCall
+  @discardableResult
+  func initWallet(_ request: Lnrpc_InitWalletRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_InitWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerInitWalletCall
 
   /// Synchronous. Unary.
-  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest) throws -> Lnrpc_UnlockWalletResponse
+  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, metadata customMetadata: Metadata) throws -> Lnrpc_UnlockWalletResponse
   /// Asynchronous. Unary.
-  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, completion: @escaping (Lnrpc_UnlockWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerUnlockWalletCall
+  @discardableResult
+  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_UnlockWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerUnlockWalletCall
 
   /// Synchronous. Unary.
-  func changePassword(_ request: Lnrpc_ChangePasswordRequest) throws -> Lnrpc_ChangePasswordResponse
+  func changePassword(_ request: Lnrpc_ChangePasswordRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChangePasswordResponse
   /// Asynchronous. Unary.
-  func changePassword(_ request: Lnrpc_ChangePasswordRequest, completion: @escaping (Lnrpc_ChangePasswordResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerChangePasswordCall
+  @discardableResult
+  func changePassword(_ request: Lnrpc_ChangePasswordRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChangePasswordResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerChangePasswordCall
+
+}
+
+internal extension Lnrpc_WalletUnlockerService {
+  /// Synchronous. Unary.
+  func genSeed(_ request: Lnrpc_GenSeedRequest) throws -> Lnrpc_GenSeedResponse {
+    return try self.genSeed(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func genSeed(_ request: Lnrpc_GenSeedRequest, completion: @escaping (Lnrpc_GenSeedResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerGenSeedCall {
+    return try self.genSeed(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func initWallet(_ request: Lnrpc_InitWalletRequest) throws -> Lnrpc_InitWalletResponse {
+    return try self.initWallet(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func initWallet(_ request: Lnrpc_InitWalletRequest, completion: @escaping (Lnrpc_InitWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerInitWalletCall {
+    return try self.initWallet(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest) throws -> Lnrpc_UnlockWalletResponse {
+    return try self.unlockWallet(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, completion: @escaping (Lnrpc_UnlockWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerUnlockWalletCall {
+    return try self.unlockWallet(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func changePassword(_ request: Lnrpc_ChangePasswordRequest) throws -> Lnrpc_ChangePasswordResponse {
+    return try self.changePassword(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func changePassword(_ request: Lnrpc_ChangePasswordRequest, completion: @escaping (Lnrpc_ChangePasswordResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerChangePasswordCall {
+    return try self.changePassword(request, metadata: self.metadata, completion: completion)
+  }
 
 }
 
 internal final class Lnrpc_WalletUnlockerServiceClient: ServiceClientBase, Lnrpc_WalletUnlockerService {
   /// Synchronous. Unary.
-  internal func genSeed(_ request: Lnrpc_GenSeedRequest) throws -> Lnrpc_GenSeedResponse {
+  internal func genSeed(_ request: Lnrpc_GenSeedRequest, metadata customMetadata: Metadata) throws -> Lnrpc_GenSeedResponse {
     return try Lnrpc_WalletUnlockerGenSeedCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func genSeed(_ request: Lnrpc_GenSeedRequest, completion: @escaping (Lnrpc_GenSeedResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerGenSeedCall {
+  @discardableResult
+  internal func genSeed(_ request: Lnrpc_GenSeedRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_GenSeedResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerGenSeedCall {
     return try Lnrpc_WalletUnlockerGenSeedCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func initWallet(_ request: Lnrpc_InitWalletRequest) throws -> Lnrpc_InitWalletResponse {
+  internal func initWallet(_ request: Lnrpc_InitWalletRequest, metadata customMetadata: Metadata) throws -> Lnrpc_InitWalletResponse {
     return try Lnrpc_WalletUnlockerInitWalletCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func initWallet(_ request: Lnrpc_InitWalletRequest, completion: @escaping (Lnrpc_InitWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerInitWalletCall {
+  @discardableResult
+  internal func initWallet(_ request: Lnrpc_InitWalletRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_InitWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerInitWalletCall {
     return try Lnrpc_WalletUnlockerInitWalletCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func unlockWallet(_ request: Lnrpc_UnlockWalletRequest) throws -> Lnrpc_UnlockWalletResponse {
+  internal func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, metadata customMetadata: Metadata) throws -> Lnrpc_UnlockWalletResponse {
     return try Lnrpc_WalletUnlockerUnlockWalletCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, completion: @escaping (Lnrpc_UnlockWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerUnlockWalletCall {
+  @discardableResult
+  internal func unlockWallet(_ request: Lnrpc_UnlockWalletRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_UnlockWalletResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerUnlockWalletCall {
     return try Lnrpc_WalletUnlockerUnlockWalletCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func changePassword(_ request: Lnrpc_ChangePasswordRequest) throws -> Lnrpc_ChangePasswordResponse {
+  internal func changePassword(_ request: Lnrpc_ChangePasswordRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChangePasswordResponse {
     return try Lnrpc_WalletUnlockerChangePasswordCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func changePassword(_ request: Lnrpc_ChangePasswordRequest, completion: @escaping (Lnrpc_ChangePasswordResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerChangePasswordCall {
+  @discardableResult
+  internal func changePassword(_ request: Lnrpc_ChangePasswordRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChangePasswordResponse?, CallResult) -> Void) throws -> Lnrpc_WalletUnlockerChangePasswordCall {
     return try Lnrpc_WalletUnlockerChangePasswordCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
 }
@@ -136,6 +187,12 @@ internal protocol Lnrpc_LightningGetTransactionsCall: ClientCallUnary {}
 
 fileprivate final class Lnrpc_LightningGetTransactionsCallBase: ClientCallUnaryBase<Lnrpc_GetTransactionsRequest, Lnrpc_TransactionDetails>, Lnrpc_LightningGetTransactionsCall {
   override class var method: String { return "/lnrpc.Lightning/GetTransactions" }
+}
+
+internal protocol Lnrpc_LightningEstimateFeeCall: ClientCallUnary {}
+
+fileprivate final class Lnrpc_LightningEstimateFeeCallBase: ClientCallUnaryBase<Lnrpc_EstimateFeeRequest, Lnrpc_EstimateFeeResponse>, Lnrpc_LightningEstimateFeeCall {
+  override class var method: String { return "/lnrpc.Lightning/EstimateFee" }
 }
 
 internal protocol Lnrpc_LightningSendCoinsCall: ClientCallUnary {}
@@ -224,6 +281,22 @@ internal protocol Lnrpc_LightningListChannelsCall: ClientCallUnary {}
 
 fileprivate final class Lnrpc_LightningListChannelsCallBase: ClientCallUnaryBase<Lnrpc_ListChannelsRequest, Lnrpc_ListChannelsResponse>, Lnrpc_LightningListChannelsCall {
   override class var method: String { return "/lnrpc.Lightning/ListChannels" }
+}
+
+internal protocol Lnrpc_LightningSubscribeChannelEventsCall: ClientCallServerStreaming {
+  /// Do not call this directly, call `receive()` in the protocol extension below instead.
+  func _receive(timeout: DispatchTime) throws -> Lnrpc_ChannelEventUpdate?
+  /// Call this to wait for a result. Nonblocking.
+  func receive(completion: @escaping (ResultOrRPCError<Lnrpc_ChannelEventUpdate?>) -> Void) throws
+}
+
+internal extension Lnrpc_LightningSubscribeChannelEventsCall {
+  /// Call this to wait for a result. Blocking.
+  func receive(timeout: DispatchTime = .distantFuture) throws -> Lnrpc_ChannelEventUpdate? { return try self._receive(timeout: timeout) }
+}
+
+fileprivate final class Lnrpc_LightningSubscribeChannelEventsCallBase: ClientCallServerStreamingBase<Lnrpc_ChannelEventSubscription, Lnrpc_ChannelEventUpdate>, Lnrpc_LightningSubscribeChannelEventsCall {
+  override class var method: String { return "/lnrpc.Lightning/SubscribeChannelEvents" }
 }
 
 internal protocol Lnrpc_LightningClosedChannelsCall: ClientCallUnary {}
@@ -478,677 +551,1363 @@ fileprivate final class Lnrpc_LightningForwardingHistoryCallBase: ClientCallUnar
   override class var method: String { return "/lnrpc.Lightning/ForwardingHistory" }
 }
 
+internal protocol Lnrpc_LightningExportChannelBackupCall: ClientCallUnary {}
+
+fileprivate final class Lnrpc_LightningExportChannelBackupCallBase: ClientCallUnaryBase<Lnrpc_ExportChannelBackupRequest, Lnrpc_ChannelBackup>, Lnrpc_LightningExportChannelBackupCall {
+  override class var method: String { return "/lnrpc.Lightning/ExportChannelBackup" }
+}
+
+internal protocol Lnrpc_LightningExportAllChannelBackupsCall: ClientCallUnary {}
+
+fileprivate final class Lnrpc_LightningExportAllChannelBackupsCallBase: ClientCallUnaryBase<Lnrpc_ChanBackupExportRequest, Lnrpc_ChanBackupSnapshot>, Lnrpc_LightningExportAllChannelBackupsCall {
+  override class var method: String { return "/lnrpc.Lightning/ExportAllChannelBackups" }
+}
+
+internal protocol Lnrpc_LightningVerifyChanBackupCall: ClientCallUnary {}
+
+fileprivate final class Lnrpc_LightningVerifyChanBackupCallBase: ClientCallUnaryBase<Lnrpc_ChanBackupSnapshot, Lnrpc_VerifyChanBackupResponse>, Lnrpc_LightningVerifyChanBackupCall {
+  override class var method: String { return "/lnrpc.Lightning/VerifyChanBackup" }
+}
+
+internal protocol Lnrpc_LightningRestoreChannelBackupsCall: ClientCallUnary {}
+
+fileprivate final class Lnrpc_LightningRestoreChannelBackupsCallBase: ClientCallUnaryBase<Lnrpc_RestoreChanBackupRequest, Lnrpc_RestoreBackupResponse>, Lnrpc_LightningRestoreChannelBackupsCall {
+  override class var method: String { return "/lnrpc.Lightning/RestoreChannelBackups" }
+}
+
+internal protocol Lnrpc_LightningSubscribeChannelBackupsCall: ClientCallServerStreaming {
+  /// Do not call this directly, call `receive()` in the protocol extension below instead.
+  func _receive(timeout: DispatchTime) throws -> Lnrpc_ChanBackupSnapshot?
+  /// Call this to wait for a result. Nonblocking.
+  func receive(completion: @escaping (ResultOrRPCError<Lnrpc_ChanBackupSnapshot?>) -> Void) throws
+}
+
+internal extension Lnrpc_LightningSubscribeChannelBackupsCall {
+  /// Call this to wait for a result. Blocking.
+  func receive(timeout: DispatchTime = .distantFuture) throws -> Lnrpc_ChanBackupSnapshot? { return try self._receive(timeout: timeout) }
+}
+
+fileprivate final class Lnrpc_LightningSubscribeChannelBackupsCallBase: ClientCallServerStreamingBase<Lnrpc_ChannelBackupSubscription, Lnrpc_ChanBackupSnapshot>, Lnrpc_LightningSubscribeChannelBackupsCall {
+  override class var method: String { return "/lnrpc.Lightning/SubscribeChannelBackups" }
+}
+
 
 /// Instantiate Lnrpc_LightningServiceClient, then call methods of this protocol to make API calls.
 internal protocol Lnrpc_LightningService: ServiceClient {
   /// Synchronous. Unary.
-  func walletBalance(_ request: Lnrpc_WalletBalanceRequest) throws -> Lnrpc_WalletBalanceResponse
+  func walletBalance(_ request: Lnrpc_WalletBalanceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_WalletBalanceResponse
   /// Asynchronous. Unary.
-  func walletBalance(_ request: Lnrpc_WalletBalanceRequest, completion: @escaping (Lnrpc_WalletBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningWalletBalanceCall
+  @discardableResult
+  func walletBalance(_ request: Lnrpc_WalletBalanceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_WalletBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningWalletBalanceCall
 
   /// Synchronous. Unary.
-  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest) throws -> Lnrpc_ChannelBalanceResponse
+  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelBalanceResponse
   /// Asynchronous. Unary.
-  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, completion: @escaping (Lnrpc_ChannelBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningChannelBalanceCall
+  @discardableResult
+  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningChannelBalanceCall
 
   /// Synchronous. Unary.
-  func getTransactions(_ request: Lnrpc_GetTransactionsRequest) throws -> Lnrpc_TransactionDetails
+  func getTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_TransactionDetails
   /// Asynchronous. Unary.
-  func getTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: @escaping (Lnrpc_TransactionDetails?, CallResult) -> Void) throws -> Lnrpc_LightningGetTransactionsCall
+  @discardableResult
+  func getTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_TransactionDetails?, CallResult) -> Void) throws -> Lnrpc_LightningGetTransactionsCall
 
   /// Synchronous. Unary.
-  func sendCoins(_ request: Lnrpc_SendCoinsRequest) throws -> Lnrpc_SendCoinsResponse
+  func estimateFee(_ request: Lnrpc_EstimateFeeRequest, metadata customMetadata: Metadata) throws -> Lnrpc_EstimateFeeResponse
   /// Asynchronous. Unary.
-  func sendCoins(_ request: Lnrpc_SendCoinsRequest, completion: @escaping (Lnrpc_SendCoinsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendCoinsCall
+  @discardableResult
+  func estimateFee(_ request: Lnrpc_EstimateFeeRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_EstimateFeeResponse?, CallResult) -> Void) throws -> Lnrpc_LightningEstimateFeeCall
 
   /// Synchronous. Unary.
-  func listUnspent(_ request: Lnrpc_ListUnspentRequest) throws -> Lnrpc_ListUnspentResponse
+  func sendCoins(_ request: Lnrpc_SendCoinsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendCoinsResponse
   /// Asynchronous. Unary.
-  func listUnspent(_ request: Lnrpc_ListUnspentRequest, completion: @escaping (Lnrpc_ListUnspentResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListUnspentCall
+  @discardableResult
+  func sendCoins(_ request: Lnrpc_SendCoinsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendCoinsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendCoinsCall
+
+  /// Synchronous. Unary.
+  func listUnspent(_ request: Lnrpc_ListUnspentRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListUnspentResponse
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listUnspent(_ request: Lnrpc_ListUnspentRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListUnspentResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListUnspentCall
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  func subscribeTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeTransactionsCall
+  func subscribeTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeTransactionsCall
 
   /// Synchronous. Unary.
-  func sendMany(_ request: Lnrpc_SendManyRequest) throws -> Lnrpc_SendManyResponse
+  func sendMany(_ request: Lnrpc_SendManyRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendManyResponse
   /// Asynchronous. Unary.
-  func sendMany(_ request: Lnrpc_SendManyRequest, completion: @escaping (Lnrpc_SendManyResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendManyCall
+  @discardableResult
+  func sendMany(_ request: Lnrpc_SendManyRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendManyResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendManyCall
 
   /// Synchronous. Unary.
-  func newAddress(_ request: Lnrpc_NewAddressRequest) throws -> Lnrpc_NewAddressResponse
+  func newAddress(_ request: Lnrpc_NewAddressRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NewAddressResponse
   /// Asynchronous. Unary.
-  func newAddress(_ request: Lnrpc_NewAddressRequest, completion: @escaping (Lnrpc_NewAddressResponse?, CallResult) -> Void) throws -> Lnrpc_LightningNewAddressCall
+  @discardableResult
+  func newAddress(_ request: Lnrpc_NewAddressRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NewAddressResponse?, CallResult) -> Void) throws -> Lnrpc_LightningNewAddressCall
 
   /// Synchronous. Unary.
-  func signMessage(_ request: Lnrpc_SignMessageRequest) throws -> Lnrpc_SignMessageResponse
+  func signMessage(_ request: Lnrpc_SignMessageRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SignMessageResponse
   /// Asynchronous. Unary.
-  func signMessage(_ request: Lnrpc_SignMessageRequest, completion: @escaping (Lnrpc_SignMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSignMessageCall
+  @discardableResult
+  func signMessage(_ request: Lnrpc_SignMessageRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SignMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSignMessageCall
 
   /// Synchronous. Unary.
-  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest) throws -> Lnrpc_VerifyMessageResponse
+  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, metadata customMetadata: Metadata) throws -> Lnrpc_VerifyMessageResponse
   /// Asynchronous. Unary.
-  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, completion: @escaping (Lnrpc_VerifyMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyMessageCall
+  @discardableResult
+  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_VerifyMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyMessageCall
 
   /// Synchronous. Unary.
-  func connectPeer(_ request: Lnrpc_ConnectPeerRequest) throws -> Lnrpc_ConnectPeerResponse
+  func connectPeer(_ request: Lnrpc_ConnectPeerRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ConnectPeerResponse
   /// Asynchronous. Unary.
-  func connectPeer(_ request: Lnrpc_ConnectPeerRequest, completion: @escaping (Lnrpc_ConnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningConnectPeerCall
+  @discardableResult
+  func connectPeer(_ request: Lnrpc_ConnectPeerRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ConnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningConnectPeerCall
 
   /// Synchronous. Unary.
-  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest) throws -> Lnrpc_DisconnectPeerResponse
+  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DisconnectPeerResponse
   /// Asynchronous. Unary.
-  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, completion: @escaping (Lnrpc_DisconnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDisconnectPeerCall
+  @discardableResult
+  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DisconnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDisconnectPeerCall
 
   /// Synchronous. Unary.
-  func listPeers(_ request: Lnrpc_ListPeersRequest) throws -> Lnrpc_ListPeersResponse
+  func listPeers(_ request: Lnrpc_ListPeersRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListPeersResponse
   /// Asynchronous. Unary.
-  func listPeers(_ request: Lnrpc_ListPeersRequest, completion: @escaping (Lnrpc_ListPeersResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPeersCall
+  @discardableResult
+  func listPeers(_ request: Lnrpc_ListPeersRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListPeersResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPeersCall
 
   /// Synchronous. Unary.
-  func getInfo(_ request: Lnrpc_GetInfoRequest) throws -> Lnrpc_GetInfoResponse
+  func getInfo(_ request: Lnrpc_GetInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_GetInfoResponse
   /// Asynchronous. Unary.
-  func getInfo(_ request: Lnrpc_GetInfoRequest, completion: @escaping (Lnrpc_GetInfoResponse?, CallResult) -> Void) throws -> Lnrpc_LightningGetInfoCall
+  @discardableResult
+  func getInfo(_ request: Lnrpc_GetInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_GetInfoResponse?, CallResult) -> Void) throws -> Lnrpc_LightningGetInfoCall
 
   /// Synchronous. Unary.
-  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest) throws -> Lnrpc_PendingChannelsResponse
+  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_PendingChannelsResponse
   /// Asynchronous. Unary.
-  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, completion: @escaping (Lnrpc_PendingChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningPendingChannelsCall
+  @discardableResult
+  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PendingChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningPendingChannelsCall
 
   /// Synchronous. Unary.
-  func listChannels(_ request: Lnrpc_ListChannelsRequest) throws -> Lnrpc_ListChannelsResponse
+  func listChannels(_ request: Lnrpc_ListChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListChannelsResponse
   /// Asynchronous. Unary.
-  func listChannels(_ request: Lnrpc_ListChannelsRequest, completion: @escaping (Lnrpc_ListChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListChannelsCall
-
-  /// Synchronous. Unary.
-  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest) throws -> Lnrpc_ClosedChannelsResponse
-  /// Asynchronous. Unary.
-  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, completion: @escaping (Lnrpc_ClosedChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningClosedChannelsCall
-
-  /// Synchronous. Unary.
-  func openChannelSync(_ request: Lnrpc_OpenChannelRequest) throws -> Lnrpc_ChannelPoint
-  /// Asynchronous. Unary.
-  func openChannelSync(_ request: Lnrpc_OpenChannelRequest, completion: @escaping (Lnrpc_ChannelPoint?, CallResult) -> Void) throws -> Lnrpc_LightningOpenChannelSyncCall
+  @discardableResult
+  func listChannels(_ request: Lnrpc_ListChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListChannelsCall
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  func openChannel(_ request: Lnrpc_OpenChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningOpenChannelCall
+  func subscribeChannelEvents(_ request: Lnrpc_ChannelEventSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelEventsCall
+
+  /// Synchronous. Unary.
+  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ClosedChannelsResponse
+  /// Asynchronous. Unary.
+  @discardableResult
+  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ClosedChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningClosedChannelsCall
+
+  /// Synchronous. Unary.
+  func openChannelSync(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelPoint
+  /// Asynchronous. Unary.
+  @discardableResult
+  func openChannelSync(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelPoint?, CallResult) -> Void) throws -> Lnrpc_LightningOpenChannelSyncCall
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  func closeChannel(_ request: Lnrpc_CloseChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningCloseChannelCall
+  func openChannel(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningOpenChannelCall
+
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  func closeChannel(_ request: Lnrpc_CloseChannelRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningCloseChannelCall
 
   /// Synchronous. Unary.
-  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest) throws -> Lnrpc_AbandonChannelResponse
+  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_AbandonChannelResponse
   /// Asynchronous. Unary.
-  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, completion: @escaping (Lnrpc_AbandonChannelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAbandonChannelCall
+  @discardableResult
+  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_AbandonChannelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAbandonChannelCall
 
   /// Asynchronous. Bidirectional-streaming.
   /// Use methods on the returned object to stream messages,
   /// to wait for replies, and to close the connection.
-  func sendPayment(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendPaymentCall
+  func sendPayment(metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendPaymentCall
 
   /// Synchronous. Unary.
-  func sendPaymentSync(_ request: Lnrpc_SendRequest) throws -> Lnrpc_SendResponse
+  func sendPaymentSync(_ request: Lnrpc_SendRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendResponse
   /// Asynchronous. Unary.
-  func sendPaymentSync(_ request: Lnrpc_SendRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendPaymentSyncCall
+  @discardableResult
+  func sendPaymentSync(_ request: Lnrpc_SendRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendPaymentSyncCall
 
   /// Asynchronous. Bidirectional-streaming.
   /// Use methods on the returned object to stream messages,
   /// to wait for replies, and to close the connection.
-  func sendToRoute(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendToRouteCall
+  func sendToRoute(metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendToRouteCall
 
   /// Synchronous. Unary.
-  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest) throws -> Lnrpc_SendResponse
+  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendResponse
   /// Asynchronous. Unary.
-  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendToRouteSyncCall
+  @discardableResult
+  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendToRouteSyncCall
 
   /// Synchronous. Unary.
-  func addInvoice(_ request: Lnrpc_Invoice) throws -> Lnrpc_AddInvoiceResponse
+  func addInvoice(_ request: Lnrpc_Invoice, metadata customMetadata: Metadata) throws -> Lnrpc_AddInvoiceResponse
   /// Asynchronous. Unary.
-  func addInvoice(_ request: Lnrpc_Invoice, completion: @escaping (Lnrpc_AddInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAddInvoiceCall
+  @discardableResult
+  func addInvoice(_ request: Lnrpc_Invoice, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_AddInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAddInvoiceCall
 
   /// Synchronous. Unary.
-  func listInvoices(_ request: Lnrpc_ListInvoiceRequest) throws -> Lnrpc_ListInvoiceResponse
+  func listInvoices(_ request: Lnrpc_ListInvoiceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListInvoiceResponse
   /// Asynchronous. Unary.
-  func listInvoices(_ request: Lnrpc_ListInvoiceRequest, completion: @escaping (Lnrpc_ListInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListInvoicesCall
+  @discardableResult
+  func listInvoices(_ request: Lnrpc_ListInvoiceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListInvoicesCall
 
   /// Synchronous. Unary.
-  func lookupInvoice(_ request: Lnrpc_PaymentHash) throws -> Lnrpc_Invoice
+  func lookupInvoice(_ request: Lnrpc_PaymentHash, metadata customMetadata: Metadata) throws -> Lnrpc_Invoice
   /// Asynchronous. Unary.
-  func lookupInvoice(_ request: Lnrpc_PaymentHash, completion: @escaping (Lnrpc_Invoice?, CallResult) -> Void) throws -> Lnrpc_LightningLookupInvoiceCall
+  @discardableResult
+  func lookupInvoice(_ request: Lnrpc_PaymentHash, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_Invoice?, CallResult) -> Void) throws -> Lnrpc_LightningLookupInvoiceCall
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  func subscribeInvoices(_ request: Lnrpc_InvoiceSubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeInvoicesCall
+  func subscribeInvoices(_ request: Lnrpc_InvoiceSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeInvoicesCall
 
   /// Synchronous. Unary.
-  func decodePayReq(_ request: Lnrpc_PayReqString) throws -> Lnrpc_PayReq
+  func decodePayReq(_ request: Lnrpc_PayReqString, metadata customMetadata: Metadata) throws -> Lnrpc_PayReq
   /// Asynchronous. Unary.
-  func decodePayReq(_ request: Lnrpc_PayReqString, completion: @escaping (Lnrpc_PayReq?, CallResult) -> Void) throws -> Lnrpc_LightningDecodePayReqCall
+  @discardableResult
+  func decodePayReq(_ request: Lnrpc_PayReqString, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PayReq?, CallResult) -> Void) throws -> Lnrpc_LightningDecodePayReqCall
 
   /// Synchronous. Unary.
-  func listPayments(_ request: Lnrpc_ListPaymentsRequest) throws -> Lnrpc_ListPaymentsResponse
+  func listPayments(_ request: Lnrpc_ListPaymentsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListPaymentsResponse
   /// Asynchronous. Unary.
-  func listPayments(_ request: Lnrpc_ListPaymentsRequest, completion: @escaping (Lnrpc_ListPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPaymentsCall
+  @discardableResult
+  func listPayments(_ request: Lnrpc_ListPaymentsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPaymentsCall
 
   /// Synchronous. Unary.
-  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest) throws -> Lnrpc_DeleteAllPaymentsResponse
+  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DeleteAllPaymentsResponse
   /// Asynchronous. Unary.
-  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, completion: @escaping (Lnrpc_DeleteAllPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDeleteAllPaymentsCall
+  @discardableResult
+  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DeleteAllPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDeleteAllPaymentsCall
 
   /// Synchronous. Unary.
-  func describeGraph(_ request: Lnrpc_ChannelGraphRequest) throws -> Lnrpc_ChannelGraph
+  func describeGraph(_ request: Lnrpc_ChannelGraphRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelGraph
   /// Asynchronous. Unary.
-  func describeGraph(_ request: Lnrpc_ChannelGraphRequest, completion: @escaping (Lnrpc_ChannelGraph?, CallResult) -> Void) throws -> Lnrpc_LightningDescribeGraphCall
+  @discardableResult
+  func describeGraph(_ request: Lnrpc_ChannelGraphRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelGraph?, CallResult) -> Void) throws -> Lnrpc_LightningDescribeGraphCall
 
   /// Synchronous. Unary.
-  func getChanInfo(_ request: Lnrpc_ChanInfoRequest) throws -> Lnrpc_ChannelEdge
+  func getChanInfo(_ request: Lnrpc_ChanInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelEdge
   /// Asynchronous. Unary.
-  func getChanInfo(_ request: Lnrpc_ChanInfoRequest, completion: @escaping (Lnrpc_ChannelEdge?, CallResult) -> Void) throws -> Lnrpc_LightningGetChanInfoCall
+  @discardableResult
+  func getChanInfo(_ request: Lnrpc_ChanInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelEdge?, CallResult) -> Void) throws -> Lnrpc_LightningGetChanInfoCall
 
   /// Synchronous. Unary.
-  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest) throws -> Lnrpc_NodeInfo
+  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NodeInfo
   /// Asynchronous. Unary.
-  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, completion: @escaping (Lnrpc_NodeInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNodeInfoCall
+  @discardableResult
+  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NodeInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNodeInfoCall
 
   /// Synchronous. Unary.
-  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest) throws -> Lnrpc_QueryRoutesResponse
+  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, metadata customMetadata: Metadata) throws -> Lnrpc_QueryRoutesResponse
   /// Asynchronous. Unary.
-  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, completion: @escaping (Lnrpc_QueryRoutesResponse?, CallResult) -> Void) throws -> Lnrpc_LightningQueryRoutesCall
+  @discardableResult
+  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_QueryRoutesResponse?, CallResult) -> Void) throws -> Lnrpc_LightningQueryRoutesCall
 
   /// Synchronous. Unary.
-  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest) throws -> Lnrpc_NetworkInfo
+  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NetworkInfo
   /// Asynchronous. Unary.
-  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, completion: @escaping (Lnrpc_NetworkInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNetworkInfoCall
+  @discardableResult
+  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NetworkInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNetworkInfoCall
 
   /// Synchronous. Unary.
-  func stopDaemon(_ request: Lnrpc_StopRequest) throws -> Lnrpc_StopResponse
+  func stopDaemon(_ request: Lnrpc_StopRequest, metadata customMetadata: Metadata) throws -> Lnrpc_StopResponse
   /// Asynchronous. Unary.
-  func stopDaemon(_ request: Lnrpc_StopRequest, completion: @escaping (Lnrpc_StopResponse?, CallResult) -> Void) throws -> Lnrpc_LightningStopDaemonCall
+  @discardableResult
+  func stopDaemon(_ request: Lnrpc_StopRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_StopResponse?, CallResult) -> Void) throws -> Lnrpc_LightningStopDaemonCall
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  func subscribeChannelGraph(_ request: Lnrpc_GraphTopologySubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelGraphCall
+  func subscribeChannelGraph(_ request: Lnrpc_GraphTopologySubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelGraphCall
 
   /// Synchronous. Unary.
-  func debugLevel(_ request: Lnrpc_DebugLevelRequest) throws -> Lnrpc_DebugLevelResponse
+  func debugLevel(_ request: Lnrpc_DebugLevelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DebugLevelResponse
   /// Asynchronous. Unary.
-  func debugLevel(_ request: Lnrpc_DebugLevelRequest, completion: @escaping (Lnrpc_DebugLevelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDebugLevelCall
+  @discardableResult
+  func debugLevel(_ request: Lnrpc_DebugLevelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DebugLevelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDebugLevelCall
 
   /// Synchronous. Unary.
-  func feeReport(_ request: Lnrpc_FeeReportRequest) throws -> Lnrpc_FeeReportResponse
+  func feeReport(_ request: Lnrpc_FeeReportRequest, metadata customMetadata: Metadata) throws -> Lnrpc_FeeReportResponse
   /// Asynchronous. Unary.
-  func feeReport(_ request: Lnrpc_FeeReportRequest, completion: @escaping (Lnrpc_FeeReportResponse?, CallResult) -> Void) throws -> Lnrpc_LightningFeeReportCall
+  @discardableResult
+  func feeReport(_ request: Lnrpc_FeeReportRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_FeeReportResponse?, CallResult) -> Void) throws -> Lnrpc_LightningFeeReportCall
 
   /// Synchronous. Unary.
-  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest) throws -> Lnrpc_PolicyUpdateResponse
+  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, metadata customMetadata: Metadata) throws -> Lnrpc_PolicyUpdateResponse
   /// Asynchronous. Unary.
-  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, completion: @escaping (Lnrpc_PolicyUpdateResponse?, CallResult) -> Void) throws -> Lnrpc_LightningUpdateChannelPolicyCall
+  @discardableResult
+  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PolicyUpdateResponse?, CallResult) -> Void) throws -> Lnrpc_LightningUpdateChannelPolicyCall
 
   /// Synchronous. Unary.
-  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest) throws -> Lnrpc_ForwardingHistoryResponse
+  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ForwardingHistoryResponse
   /// Asynchronous. Unary.
-  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, completion: @escaping (Lnrpc_ForwardingHistoryResponse?, CallResult) -> Void) throws -> Lnrpc_LightningForwardingHistoryCall
+  @discardableResult
+  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ForwardingHistoryResponse?, CallResult) -> Void) throws -> Lnrpc_LightningForwardingHistoryCall
+
+  /// Synchronous. Unary.
+  func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelBackup
+  /// Asynchronous. Unary.
+  @discardableResult
+  func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelBackup?, CallResult) -> Void) throws -> Lnrpc_LightningExportChannelBackupCall
+
+  /// Synchronous. Unary.
+  func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChanBackupSnapshot
+  /// Asynchronous. Unary.
+  @discardableResult
+  func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChanBackupSnapshot?, CallResult) -> Void) throws -> Lnrpc_LightningExportAllChannelBackupsCall
+
+  /// Synchronous. Unary.
+  func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot, metadata customMetadata: Metadata) throws -> Lnrpc_VerifyChanBackupResponse
+  /// Asynchronous. Unary.
+  @discardableResult
+  func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_VerifyChanBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyChanBackupCall
+
+  /// Synchronous. Unary.
+  func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest, metadata customMetadata: Metadata) throws -> Lnrpc_RestoreBackupResponse
+  /// Asynchronous. Unary.
+  @discardableResult
+  func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_RestoreBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningRestoreChannelBackupsCall
+
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  func subscribeChannelBackups(_ request: Lnrpc_ChannelBackupSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelBackupsCall
+
+}
+
+internal extension Lnrpc_LightningService {
+  /// Synchronous. Unary.
+  func walletBalance(_ request: Lnrpc_WalletBalanceRequest) throws -> Lnrpc_WalletBalanceResponse {
+    return try self.walletBalance(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func walletBalance(_ request: Lnrpc_WalletBalanceRequest, completion: @escaping (Lnrpc_WalletBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningWalletBalanceCall {
+    return try self.walletBalance(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest) throws -> Lnrpc_ChannelBalanceResponse {
+    return try self.channelBalance(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, completion: @escaping (Lnrpc_ChannelBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningChannelBalanceCall {
+    return try self.channelBalance(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func getTransactions(_ request: Lnrpc_GetTransactionsRequest) throws -> Lnrpc_TransactionDetails {
+    return try self.getTransactions(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func getTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: @escaping (Lnrpc_TransactionDetails?, CallResult) -> Void) throws -> Lnrpc_LightningGetTransactionsCall {
+    return try self.getTransactions(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func estimateFee(_ request: Lnrpc_EstimateFeeRequest) throws -> Lnrpc_EstimateFeeResponse {
+    return try self.estimateFee(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func estimateFee(_ request: Lnrpc_EstimateFeeRequest, completion: @escaping (Lnrpc_EstimateFeeResponse?, CallResult) -> Void) throws -> Lnrpc_LightningEstimateFeeCall {
+    return try self.estimateFee(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func sendCoins(_ request: Lnrpc_SendCoinsRequest) throws -> Lnrpc_SendCoinsResponse {
+    return try self.sendCoins(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func sendCoins(_ request: Lnrpc_SendCoinsRequest, completion: @escaping (Lnrpc_SendCoinsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendCoinsCall {
+    return try self.sendCoins(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func listUnspent(_ request: Lnrpc_ListUnspentRequest) throws -> Lnrpc_ListUnspentResponse {
+    return try self.listUnspent(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listUnspent(_ request: Lnrpc_ListUnspentRequest, completion: @escaping (Lnrpc_ListUnspentResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListUnspentCall {
+    return try self.listUnspent(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func subscribeTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeTransactionsCall {
+    return try self.subscribeTransactions(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func sendMany(_ request: Lnrpc_SendManyRequest) throws -> Lnrpc_SendManyResponse {
+    return try self.sendMany(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func sendMany(_ request: Lnrpc_SendManyRequest, completion: @escaping (Lnrpc_SendManyResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendManyCall {
+    return try self.sendMany(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func newAddress(_ request: Lnrpc_NewAddressRequest) throws -> Lnrpc_NewAddressResponse {
+    return try self.newAddress(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func newAddress(_ request: Lnrpc_NewAddressRequest, completion: @escaping (Lnrpc_NewAddressResponse?, CallResult) -> Void) throws -> Lnrpc_LightningNewAddressCall {
+    return try self.newAddress(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func signMessage(_ request: Lnrpc_SignMessageRequest) throws -> Lnrpc_SignMessageResponse {
+    return try self.signMessage(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func signMessage(_ request: Lnrpc_SignMessageRequest, completion: @escaping (Lnrpc_SignMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSignMessageCall {
+    return try self.signMessage(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest) throws -> Lnrpc_VerifyMessageResponse {
+    return try self.verifyMessage(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, completion: @escaping (Lnrpc_VerifyMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyMessageCall {
+    return try self.verifyMessage(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func connectPeer(_ request: Lnrpc_ConnectPeerRequest) throws -> Lnrpc_ConnectPeerResponse {
+    return try self.connectPeer(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func connectPeer(_ request: Lnrpc_ConnectPeerRequest, completion: @escaping (Lnrpc_ConnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningConnectPeerCall {
+    return try self.connectPeer(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest) throws -> Lnrpc_DisconnectPeerResponse {
+    return try self.disconnectPeer(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, completion: @escaping (Lnrpc_DisconnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDisconnectPeerCall {
+    return try self.disconnectPeer(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func listPeers(_ request: Lnrpc_ListPeersRequest) throws -> Lnrpc_ListPeersResponse {
+    return try self.listPeers(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listPeers(_ request: Lnrpc_ListPeersRequest, completion: @escaping (Lnrpc_ListPeersResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPeersCall {
+    return try self.listPeers(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func getInfo(_ request: Lnrpc_GetInfoRequest) throws -> Lnrpc_GetInfoResponse {
+    return try self.getInfo(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func getInfo(_ request: Lnrpc_GetInfoRequest, completion: @escaping (Lnrpc_GetInfoResponse?, CallResult) -> Void) throws -> Lnrpc_LightningGetInfoCall {
+    return try self.getInfo(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest) throws -> Lnrpc_PendingChannelsResponse {
+    return try self.pendingChannels(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, completion: @escaping (Lnrpc_PendingChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningPendingChannelsCall {
+    return try self.pendingChannels(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func listChannels(_ request: Lnrpc_ListChannelsRequest) throws -> Lnrpc_ListChannelsResponse {
+    return try self.listChannels(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listChannels(_ request: Lnrpc_ListChannelsRequest, completion: @escaping (Lnrpc_ListChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListChannelsCall {
+    return try self.listChannels(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func subscribeChannelEvents(_ request: Lnrpc_ChannelEventSubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelEventsCall {
+    return try self.subscribeChannelEvents(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest) throws -> Lnrpc_ClosedChannelsResponse {
+    return try self.closedChannels(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, completion: @escaping (Lnrpc_ClosedChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningClosedChannelsCall {
+    return try self.closedChannels(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func openChannelSync(_ request: Lnrpc_OpenChannelRequest) throws -> Lnrpc_ChannelPoint {
+    return try self.openChannelSync(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func openChannelSync(_ request: Lnrpc_OpenChannelRequest, completion: @escaping (Lnrpc_ChannelPoint?, CallResult) -> Void) throws -> Lnrpc_LightningOpenChannelSyncCall {
+    return try self.openChannelSync(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func openChannel(_ request: Lnrpc_OpenChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningOpenChannelCall {
+    return try self.openChannel(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func closeChannel(_ request: Lnrpc_CloseChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningCloseChannelCall {
+    return try self.closeChannel(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest) throws -> Lnrpc_AbandonChannelResponse {
+    return try self.abandonChannel(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, completion: @escaping (Lnrpc_AbandonChannelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAbandonChannelCall {
+    return try self.abandonChannel(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Bidirectional-streaming.
+  func sendPayment(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendPaymentCall {
+    return try self.sendPayment(metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func sendPaymentSync(_ request: Lnrpc_SendRequest) throws -> Lnrpc_SendResponse {
+    return try self.sendPaymentSync(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func sendPaymentSync(_ request: Lnrpc_SendRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendPaymentSyncCall {
+    return try self.sendPaymentSync(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Bidirectional-streaming.
+  func sendToRoute(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendToRouteCall {
+    return try self.sendToRoute(metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest) throws -> Lnrpc_SendResponse {
+    return try self.sendToRouteSync(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendToRouteSyncCall {
+    return try self.sendToRouteSync(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func addInvoice(_ request: Lnrpc_Invoice) throws -> Lnrpc_AddInvoiceResponse {
+    return try self.addInvoice(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func addInvoice(_ request: Lnrpc_Invoice, completion: @escaping (Lnrpc_AddInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAddInvoiceCall {
+    return try self.addInvoice(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func listInvoices(_ request: Lnrpc_ListInvoiceRequest) throws -> Lnrpc_ListInvoiceResponse {
+    return try self.listInvoices(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listInvoices(_ request: Lnrpc_ListInvoiceRequest, completion: @escaping (Lnrpc_ListInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListInvoicesCall {
+    return try self.listInvoices(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func lookupInvoice(_ request: Lnrpc_PaymentHash) throws -> Lnrpc_Invoice {
+    return try self.lookupInvoice(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func lookupInvoice(_ request: Lnrpc_PaymentHash, completion: @escaping (Lnrpc_Invoice?, CallResult) -> Void) throws -> Lnrpc_LightningLookupInvoiceCall {
+    return try self.lookupInvoice(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func subscribeInvoices(_ request: Lnrpc_InvoiceSubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeInvoicesCall {
+    return try self.subscribeInvoices(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func decodePayReq(_ request: Lnrpc_PayReqString) throws -> Lnrpc_PayReq {
+    return try self.decodePayReq(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func decodePayReq(_ request: Lnrpc_PayReqString, completion: @escaping (Lnrpc_PayReq?, CallResult) -> Void) throws -> Lnrpc_LightningDecodePayReqCall {
+    return try self.decodePayReq(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func listPayments(_ request: Lnrpc_ListPaymentsRequest) throws -> Lnrpc_ListPaymentsResponse {
+    return try self.listPayments(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func listPayments(_ request: Lnrpc_ListPaymentsRequest, completion: @escaping (Lnrpc_ListPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPaymentsCall {
+    return try self.listPayments(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest) throws -> Lnrpc_DeleteAllPaymentsResponse {
+    return try self.deleteAllPayments(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, completion: @escaping (Lnrpc_DeleteAllPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDeleteAllPaymentsCall {
+    return try self.deleteAllPayments(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func describeGraph(_ request: Lnrpc_ChannelGraphRequest) throws -> Lnrpc_ChannelGraph {
+    return try self.describeGraph(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func describeGraph(_ request: Lnrpc_ChannelGraphRequest, completion: @escaping (Lnrpc_ChannelGraph?, CallResult) -> Void) throws -> Lnrpc_LightningDescribeGraphCall {
+    return try self.describeGraph(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func getChanInfo(_ request: Lnrpc_ChanInfoRequest) throws -> Lnrpc_ChannelEdge {
+    return try self.getChanInfo(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func getChanInfo(_ request: Lnrpc_ChanInfoRequest, completion: @escaping (Lnrpc_ChannelEdge?, CallResult) -> Void) throws -> Lnrpc_LightningGetChanInfoCall {
+    return try self.getChanInfo(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest) throws -> Lnrpc_NodeInfo {
+    return try self.getNodeInfo(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, completion: @escaping (Lnrpc_NodeInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNodeInfoCall {
+    return try self.getNodeInfo(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest) throws -> Lnrpc_QueryRoutesResponse {
+    return try self.queryRoutes(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, completion: @escaping (Lnrpc_QueryRoutesResponse?, CallResult) -> Void) throws -> Lnrpc_LightningQueryRoutesCall {
+    return try self.queryRoutes(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest) throws -> Lnrpc_NetworkInfo {
+    return try self.getNetworkInfo(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, completion: @escaping (Lnrpc_NetworkInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNetworkInfoCall {
+    return try self.getNetworkInfo(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func stopDaemon(_ request: Lnrpc_StopRequest) throws -> Lnrpc_StopResponse {
+    return try self.stopDaemon(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func stopDaemon(_ request: Lnrpc_StopRequest, completion: @escaping (Lnrpc_StopResponse?, CallResult) -> Void) throws -> Lnrpc_LightningStopDaemonCall {
+    return try self.stopDaemon(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func subscribeChannelGraph(_ request: Lnrpc_GraphTopologySubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelGraphCall {
+    return try self.subscribeChannelGraph(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func debugLevel(_ request: Lnrpc_DebugLevelRequest) throws -> Lnrpc_DebugLevelResponse {
+    return try self.debugLevel(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func debugLevel(_ request: Lnrpc_DebugLevelRequest, completion: @escaping (Lnrpc_DebugLevelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDebugLevelCall {
+    return try self.debugLevel(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func feeReport(_ request: Lnrpc_FeeReportRequest) throws -> Lnrpc_FeeReportResponse {
+    return try self.feeReport(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func feeReport(_ request: Lnrpc_FeeReportRequest, completion: @escaping (Lnrpc_FeeReportResponse?, CallResult) -> Void) throws -> Lnrpc_LightningFeeReportCall {
+    return try self.feeReport(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest) throws -> Lnrpc_PolicyUpdateResponse {
+    return try self.updateChannelPolicy(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, completion: @escaping (Lnrpc_PolicyUpdateResponse?, CallResult) -> Void) throws -> Lnrpc_LightningUpdateChannelPolicyCall {
+    return try self.updateChannelPolicy(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest) throws -> Lnrpc_ForwardingHistoryResponse {
+    return try self.forwardingHistory(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, completion: @escaping (Lnrpc_ForwardingHistoryResponse?, CallResult) -> Void) throws -> Lnrpc_LightningForwardingHistoryCall {
+    return try self.forwardingHistory(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest) throws -> Lnrpc_ChannelBackup {
+    return try self.exportChannelBackup(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest, completion: @escaping (Lnrpc_ChannelBackup?, CallResult) -> Void) throws -> Lnrpc_LightningExportChannelBackupCall {
+    return try self.exportChannelBackup(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest) throws -> Lnrpc_ChanBackupSnapshot {
+    return try self.exportAllChannelBackups(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest, completion: @escaping (Lnrpc_ChanBackupSnapshot?, CallResult) -> Void) throws -> Lnrpc_LightningExportAllChannelBackupsCall {
+    return try self.exportAllChannelBackups(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot) throws -> Lnrpc_VerifyChanBackupResponse {
+    return try self.verifyChanBackup(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot, completion: @escaping (Lnrpc_VerifyChanBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyChanBackupCall {
+    return try self.verifyChanBackup(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest) throws -> Lnrpc_RestoreBackupResponse {
+    return try self.restoreChannelBackups(request, metadata: self.metadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest, completion: @escaping (Lnrpc_RestoreBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningRestoreChannelBackupsCall {
+    return try self.restoreChannelBackups(request, metadata: self.metadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  func subscribeChannelBackups(_ request: Lnrpc_ChannelBackupSubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelBackupsCall {
+    return try self.subscribeChannelBackups(request, metadata: self.metadata, completion: completion)
+  }
 
 }
 
 internal final class Lnrpc_LightningServiceClient: ServiceClientBase, Lnrpc_LightningService {
   /// Synchronous. Unary.
-  internal func walletBalance(_ request: Lnrpc_WalletBalanceRequest) throws -> Lnrpc_WalletBalanceResponse {
+  internal func walletBalance(_ request: Lnrpc_WalletBalanceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_WalletBalanceResponse {
     return try Lnrpc_LightningWalletBalanceCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func walletBalance(_ request: Lnrpc_WalletBalanceRequest, completion: @escaping (Lnrpc_WalletBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningWalletBalanceCall {
+  @discardableResult
+  internal func walletBalance(_ request: Lnrpc_WalletBalanceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_WalletBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningWalletBalanceCall {
     return try Lnrpc_LightningWalletBalanceCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func channelBalance(_ request: Lnrpc_ChannelBalanceRequest) throws -> Lnrpc_ChannelBalanceResponse {
+  internal func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelBalanceResponse {
     return try Lnrpc_LightningChannelBalanceCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, completion: @escaping (Lnrpc_ChannelBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningChannelBalanceCall {
+  @discardableResult
+  internal func channelBalance(_ request: Lnrpc_ChannelBalanceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelBalanceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningChannelBalanceCall {
     return try Lnrpc_LightningChannelBalanceCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func getTransactions(_ request: Lnrpc_GetTransactionsRequest) throws -> Lnrpc_TransactionDetails {
+  internal func getTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_TransactionDetails {
     return try Lnrpc_LightningGetTransactionsCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func getTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: @escaping (Lnrpc_TransactionDetails?, CallResult) -> Void) throws -> Lnrpc_LightningGetTransactionsCall {
+  @discardableResult
+  internal func getTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_TransactionDetails?, CallResult) -> Void) throws -> Lnrpc_LightningGetTransactionsCall {
     return try Lnrpc_LightningGetTransactionsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func sendCoins(_ request: Lnrpc_SendCoinsRequest) throws -> Lnrpc_SendCoinsResponse {
-    return try Lnrpc_LightningSendCoinsCallBase(channel)
-      .run(request: request, metadata: metadata)
+  internal func estimateFee(_ request: Lnrpc_EstimateFeeRequest, metadata customMetadata: Metadata) throws -> Lnrpc_EstimateFeeResponse {
+    return try Lnrpc_LightningEstimateFeeCallBase(channel)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func sendCoins(_ request: Lnrpc_SendCoinsRequest, completion: @escaping (Lnrpc_SendCoinsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendCoinsCall {
-    return try Lnrpc_LightningSendCoinsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+  @discardableResult
+  internal func estimateFee(_ request: Lnrpc_EstimateFeeRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_EstimateFeeResponse?, CallResult) -> Void) throws -> Lnrpc_LightningEstimateFeeCall {
+    return try Lnrpc_LightningEstimateFeeCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func listUnspent(_ request: Lnrpc_ListUnspentRequest) throws -> Lnrpc_ListUnspentResponse {
-    return try Lnrpc_LightningListUnspentCallBase(channel)
-      .run(request: request, metadata: metadata)
+  internal func sendCoins(_ request: Lnrpc_SendCoinsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendCoinsResponse {
+    return try Lnrpc_LightningSendCoinsCallBase(channel)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func listUnspent(_ request: Lnrpc_ListUnspentRequest, completion: @escaping (Lnrpc_ListUnspentResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListUnspentCall {
+  @discardableResult
+  internal func sendCoins(_ request: Lnrpc_SendCoinsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendCoinsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendCoinsCall {
+    return try Lnrpc_LightningSendCoinsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func listUnspent(_ request: Lnrpc_ListUnspentRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListUnspentResponse {
     return try Lnrpc_LightningListUnspentCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func listUnspent(_ request: Lnrpc_ListUnspentRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListUnspentResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListUnspentCall {
+    return try Lnrpc_LightningListUnspentCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  internal func subscribeTransactions(_ request: Lnrpc_GetTransactionsRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeTransactionsCall {
+  internal func subscribeTransactions(_ request: Lnrpc_GetTransactionsRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeTransactionsCall {
     return try Lnrpc_LightningSubscribeTransactionsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func sendMany(_ request: Lnrpc_SendManyRequest) throws -> Lnrpc_SendManyResponse {
+  internal func sendMany(_ request: Lnrpc_SendManyRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendManyResponse {
     return try Lnrpc_LightningSendManyCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func sendMany(_ request: Lnrpc_SendManyRequest, completion: @escaping (Lnrpc_SendManyResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendManyCall {
+  @discardableResult
+  internal func sendMany(_ request: Lnrpc_SendManyRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendManyResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendManyCall {
     return try Lnrpc_LightningSendManyCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func newAddress(_ request: Lnrpc_NewAddressRequest) throws -> Lnrpc_NewAddressResponse {
+  internal func newAddress(_ request: Lnrpc_NewAddressRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NewAddressResponse {
     return try Lnrpc_LightningNewAddressCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func newAddress(_ request: Lnrpc_NewAddressRequest, completion: @escaping (Lnrpc_NewAddressResponse?, CallResult) -> Void) throws -> Lnrpc_LightningNewAddressCall {
+  @discardableResult
+  internal func newAddress(_ request: Lnrpc_NewAddressRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NewAddressResponse?, CallResult) -> Void) throws -> Lnrpc_LightningNewAddressCall {
     return try Lnrpc_LightningNewAddressCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func signMessage(_ request: Lnrpc_SignMessageRequest) throws -> Lnrpc_SignMessageResponse {
+  internal func signMessage(_ request: Lnrpc_SignMessageRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SignMessageResponse {
     return try Lnrpc_LightningSignMessageCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func signMessage(_ request: Lnrpc_SignMessageRequest, completion: @escaping (Lnrpc_SignMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSignMessageCall {
+  @discardableResult
+  internal func signMessage(_ request: Lnrpc_SignMessageRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SignMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSignMessageCall {
     return try Lnrpc_LightningSignMessageCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func verifyMessage(_ request: Lnrpc_VerifyMessageRequest) throws -> Lnrpc_VerifyMessageResponse {
+  internal func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, metadata customMetadata: Metadata) throws -> Lnrpc_VerifyMessageResponse {
     return try Lnrpc_LightningVerifyMessageCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, completion: @escaping (Lnrpc_VerifyMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyMessageCall {
+  @discardableResult
+  internal func verifyMessage(_ request: Lnrpc_VerifyMessageRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_VerifyMessageResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyMessageCall {
     return try Lnrpc_LightningVerifyMessageCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func connectPeer(_ request: Lnrpc_ConnectPeerRequest) throws -> Lnrpc_ConnectPeerResponse {
+  internal func connectPeer(_ request: Lnrpc_ConnectPeerRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ConnectPeerResponse {
     return try Lnrpc_LightningConnectPeerCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func connectPeer(_ request: Lnrpc_ConnectPeerRequest, completion: @escaping (Lnrpc_ConnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningConnectPeerCall {
+  @discardableResult
+  internal func connectPeer(_ request: Lnrpc_ConnectPeerRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ConnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningConnectPeerCall {
     return try Lnrpc_LightningConnectPeerCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest) throws -> Lnrpc_DisconnectPeerResponse {
+  internal func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DisconnectPeerResponse {
     return try Lnrpc_LightningDisconnectPeerCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, completion: @escaping (Lnrpc_DisconnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDisconnectPeerCall {
+  @discardableResult
+  internal func disconnectPeer(_ request: Lnrpc_DisconnectPeerRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DisconnectPeerResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDisconnectPeerCall {
     return try Lnrpc_LightningDisconnectPeerCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func listPeers(_ request: Lnrpc_ListPeersRequest) throws -> Lnrpc_ListPeersResponse {
+  internal func listPeers(_ request: Lnrpc_ListPeersRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListPeersResponse {
     return try Lnrpc_LightningListPeersCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func listPeers(_ request: Lnrpc_ListPeersRequest, completion: @escaping (Lnrpc_ListPeersResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPeersCall {
+  @discardableResult
+  internal func listPeers(_ request: Lnrpc_ListPeersRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListPeersResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPeersCall {
     return try Lnrpc_LightningListPeersCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func getInfo(_ request: Lnrpc_GetInfoRequest) throws -> Lnrpc_GetInfoResponse {
+  internal func getInfo(_ request: Lnrpc_GetInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_GetInfoResponse {
     return try Lnrpc_LightningGetInfoCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func getInfo(_ request: Lnrpc_GetInfoRequest, completion: @escaping (Lnrpc_GetInfoResponse?, CallResult) -> Void) throws -> Lnrpc_LightningGetInfoCall {
+  @discardableResult
+  internal func getInfo(_ request: Lnrpc_GetInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_GetInfoResponse?, CallResult) -> Void) throws -> Lnrpc_LightningGetInfoCall {
     return try Lnrpc_LightningGetInfoCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func pendingChannels(_ request: Lnrpc_PendingChannelsRequest) throws -> Lnrpc_PendingChannelsResponse {
+  internal func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_PendingChannelsResponse {
     return try Lnrpc_LightningPendingChannelsCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, completion: @escaping (Lnrpc_PendingChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningPendingChannelsCall {
+  @discardableResult
+  internal func pendingChannels(_ request: Lnrpc_PendingChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PendingChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningPendingChannelsCall {
     return try Lnrpc_LightningPendingChannelsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func listChannels(_ request: Lnrpc_ListChannelsRequest) throws -> Lnrpc_ListChannelsResponse {
+  internal func listChannels(_ request: Lnrpc_ListChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListChannelsResponse {
     return try Lnrpc_LightningListChannelsCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func listChannels(_ request: Lnrpc_ListChannelsRequest, completion: @escaping (Lnrpc_ListChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListChannelsCall {
+  @discardableResult
+  internal func listChannels(_ request: Lnrpc_ListChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListChannelsCall {
     return try Lnrpc_LightningListChannelsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
-  }
-
-  /// Synchronous. Unary.
-  internal func closedChannels(_ request: Lnrpc_ClosedChannelsRequest) throws -> Lnrpc_ClosedChannelsResponse {
-    return try Lnrpc_LightningClosedChannelsCallBase(channel)
-      .run(request: request, metadata: metadata)
-  }
-  /// Asynchronous. Unary.
-  internal func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, completion: @escaping (Lnrpc_ClosedChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningClosedChannelsCall {
-    return try Lnrpc_LightningClosedChannelsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
-  }
-
-  /// Synchronous. Unary.
-  internal func openChannelSync(_ request: Lnrpc_OpenChannelRequest) throws -> Lnrpc_ChannelPoint {
-    return try Lnrpc_LightningOpenChannelSyncCallBase(channel)
-      .run(request: request, metadata: metadata)
-  }
-  /// Asynchronous. Unary.
-  internal func openChannelSync(_ request: Lnrpc_OpenChannelRequest, completion: @escaping (Lnrpc_ChannelPoint?, CallResult) -> Void) throws -> Lnrpc_LightningOpenChannelSyncCall {
-    return try Lnrpc_LightningOpenChannelSyncCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  internal func openChannel(_ request: Lnrpc_OpenChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningOpenChannelCall {
+  internal func subscribeChannelEvents(_ request: Lnrpc_ChannelEventSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelEventsCall {
+    return try Lnrpc_LightningSubscribeChannelEventsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ClosedChannelsResponse {
+    return try Lnrpc_LightningClosedChannelsCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func closedChannels(_ request: Lnrpc_ClosedChannelsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ClosedChannelsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningClosedChannelsCall {
+    return try Lnrpc_LightningClosedChannelsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func openChannelSync(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelPoint {
+    return try Lnrpc_LightningOpenChannelSyncCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func openChannelSync(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelPoint?, CallResult) -> Void) throws -> Lnrpc_LightningOpenChannelSyncCall {
+    return try Lnrpc_LightningOpenChannelSyncCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  internal func openChannel(_ request: Lnrpc_OpenChannelRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningOpenChannelCall {
     return try Lnrpc_LightningOpenChannelCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  internal func closeChannel(_ request: Lnrpc_CloseChannelRequest, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningCloseChannelCall {
+  internal func closeChannel(_ request: Lnrpc_CloseChannelRequest, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningCloseChannelCall {
     return try Lnrpc_LightningCloseChannelCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func abandonChannel(_ request: Lnrpc_AbandonChannelRequest) throws -> Lnrpc_AbandonChannelResponse {
+  internal func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_AbandonChannelResponse {
     return try Lnrpc_LightningAbandonChannelCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, completion: @escaping (Lnrpc_AbandonChannelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAbandonChannelCall {
+  @discardableResult
+  internal func abandonChannel(_ request: Lnrpc_AbandonChannelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_AbandonChannelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAbandonChannelCall {
     return try Lnrpc_LightningAbandonChannelCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Bidirectional-streaming.
   /// Use methods on the returned object to stream messages,
   /// to wait for replies, and to close the connection.
-  internal func sendPayment(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendPaymentCall {
+  internal func sendPayment(metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendPaymentCall {
     return try Lnrpc_LightningSendPaymentCallBase(channel)
-      .start(metadata: metadata, completion: completion)
+      .start(metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func sendPaymentSync(_ request: Lnrpc_SendRequest) throws -> Lnrpc_SendResponse {
+  internal func sendPaymentSync(_ request: Lnrpc_SendRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendResponse {
     return try Lnrpc_LightningSendPaymentSyncCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func sendPaymentSync(_ request: Lnrpc_SendRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendPaymentSyncCall {
+  @discardableResult
+  internal func sendPaymentSync(_ request: Lnrpc_SendRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendPaymentSyncCall {
     return try Lnrpc_LightningSendPaymentSyncCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Bidirectional-streaming.
   /// Use methods on the returned object to stream messages,
   /// to wait for replies, and to close the connection.
-  internal func sendToRoute(completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendToRouteCall {
+  internal func sendToRoute(metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSendToRouteCall {
     return try Lnrpc_LightningSendToRouteCallBase(channel)
-      .start(metadata: metadata, completion: completion)
+      .start(metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest) throws -> Lnrpc_SendResponse {
+  internal func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, metadata customMetadata: Metadata) throws -> Lnrpc_SendResponse {
     return try Lnrpc_LightningSendToRouteSyncCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendToRouteSyncCall {
+  @discardableResult
+  internal func sendToRouteSync(_ request: Lnrpc_SendToRouteRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_SendResponse?, CallResult) -> Void) throws -> Lnrpc_LightningSendToRouteSyncCall {
     return try Lnrpc_LightningSendToRouteSyncCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func addInvoice(_ request: Lnrpc_Invoice) throws -> Lnrpc_AddInvoiceResponse {
+  internal func addInvoice(_ request: Lnrpc_Invoice, metadata customMetadata: Metadata) throws -> Lnrpc_AddInvoiceResponse {
     return try Lnrpc_LightningAddInvoiceCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func addInvoice(_ request: Lnrpc_Invoice, completion: @escaping (Lnrpc_AddInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAddInvoiceCall {
+  @discardableResult
+  internal func addInvoice(_ request: Lnrpc_Invoice, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_AddInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningAddInvoiceCall {
     return try Lnrpc_LightningAddInvoiceCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func listInvoices(_ request: Lnrpc_ListInvoiceRequest) throws -> Lnrpc_ListInvoiceResponse {
+  internal func listInvoices(_ request: Lnrpc_ListInvoiceRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListInvoiceResponse {
     return try Lnrpc_LightningListInvoicesCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func listInvoices(_ request: Lnrpc_ListInvoiceRequest, completion: @escaping (Lnrpc_ListInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListInvoicesCall {
+  @discardableResult
+  internal func listInvoices(_ request: Lnrpc_ListInvoiceRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListInvoiceResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListInvoicesCall {
     return try Lnrpc_LightningListInvoicesCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func lookupInvoice(_ request: Lnrpc_PaymentHash) throws -> Lnrpc_Invoice {
+  internal func lookupInvoice(_ request: Lnrpc_PaymentHash, metadata customMetadata: Metadata) throws -> Lnrpc_Invoice {
     return try Lnrpc_LightningLookupInvoiceCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func lookupInvoice(_ request: Lnrpc_PaymentHash, completion: @escaping (Lnrpc_Invoice?, CallResult) -> Void) throws -> Lnrpc_LightningLookupInvoiceCall {
+  @discardableResult
+  internal func lookupInvoice(_ request: Lnrpc_PaymentHash, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_Invoice?, CallResult) -> Void) throws -> Lnrpc_LightningLookupInvoiceCall {
     return try Lnrpc_LightningLookupInvoiceCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  internal func subscribeInvoices(_ request: Lnrpc_InvoiceSubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeInvoicesCall {
+  internal func subscribeInvoices(_ request: Lnrpc_InvoiceSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeInvoicesCall {
     return try Lnrpc_LightningSubscribeInvoicesCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func decodePayReq(_ request: Lnrpc_PayReqString) throws -> Lnrpc_PayReq {
+  internal func decodePayReq(_ request: Lnrpc_PayReqString, metadata customMetadata: Metadata) throws -> Lnrpc_PayReq {
     return try Lnrpc_LightningDecodePayReqCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func decodePayReq(_ request: Lnrpc_PayReqString, completion: @escaping (Lnrpc_PayReq?, CallResult) -> Void) throws -> Lnrpc_LightningDecodePayReqCall {
+  @discardableResult
+  internal func decodePayReq(_ request: Lnrpc_PayReqString, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PayReq?, CallResult) -> Void) throws -> Lnrpc_LightningDecodePayReqCall {
     return try Lnrpc_LightningDecodePayReqCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func listPayments(_ request: Lnrpc_ListPaymentsRequest) throws -> Lnrpc_ListPaymentsResponse {
+  internal func listPayments(_ request: Lnrpc_ListPaymentsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ListPaymentsResponse {
     return try Lnrpc_LightningListPaymentsCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func listPayments(_ request: Lnrpc_ListPaymentsRequest, completion: @escaping (Lnrpc_ListPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPaymentsCall {
+  @discardableResult
+  internal func listPayments(_ request: Lnrpc_ListPaymentsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ListPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningListPaymentsCall {
     return try Lnrpc_LightningListPaymentsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest) throws -> Lnrpc_DeleteAllPaymentsResponse {
+  internal func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DeleteAllPaymentsResponse {
     return try Lnrpc_LightningDeleteAllPaymentsCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, completion: @escaping (Lnrpc_DeleteAllPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDeleteAllPaymentsCall {
+  @discardableResult
+  internal func deleteAllPayments(_ request: Lnrpc_DeleteAllPaymentsRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DeleteAllPaymentsResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDeleteAllPaymentsCall {
     return try Lnrpc_LightningDeleteAllPaymentsCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func describeGraph(_ request: Lnrpc_ChannelGraphRequest) throws -> Lnrpc_ChannelGraph {
+  internal func describeGraph(_ request: Lnrpc_ChannelGraphRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelGraph {
     return try Lnrpc_LightningDescribeGraphCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func describeGraph(_ request: Lnrpc_ChannelGraphRequest, completion: @escaping (Lnrpc_ChannelGraph?, CallResult) -> Void) throws -> Lnrpc_LightningDescribeGraphCall {
+  @discardableResult
+  internal func describeGraph(_ request: Lnrpc_ChannelGraphRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelGraph?, CallResult) -> Void) throws -> Lnrpc_LightningDescribeGraphCall {
     return try Lnrpc_LightningDescribeGraphCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func getChanInfo(_ request: Lnrpc_ChanInfoRequest) throws -> Lnrpc_ChannelEdge {
+  internal func getChanInfo(_ request: Lnrpc_ChanInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelEdge {
     return try Lnrpc_LightningGetChanInfoCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func getChanInfo(_ request: Lnrpc_ChanInfoRequest, completion: @escaping (Lnrpc_ChannelEdge?, CallResult) -> Void) throws -> Lnrpc_LightningGetChanInfoCall {
+  @discardableResult
+  internal func getChanInfo(_ request: Lnrpc_ChanInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelEdge?, CallResult) -> Void) throws -> Lnrpc_LightningGetChanInfoCall {
     return try Lnrpc_LightningGetChanInfoCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func getNodeInfo(_ request: Lnrpc_NodeInfoRequest) throws -> Lnrpc_NodeInfo {
+  internal func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NodeInfo {
     return try Lnrpc_LightningGetNodeInfoCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, completion: @escaping (Lnrpc_NodeInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNodeInfoCall {
+  @discardableResult
+  internal func getNodeInfo(_ request: Lnrpc_NodeInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NodeInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNodeInfoCall {
     return try Lnrpc_LightningGetNodeInfoCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func queryRoutes(_ request: Lnrpc_QueryRoutesRequest) throws -> Lnrpc_QueryRoutesResponse {
+  internal func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, metadata customMetadata: Metadata) throws -> Lnrpc_QueryRoutesResponse {
     return try Lnrpc_LightningQueryRoutesCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, completion: @escaping (Lnrpc_QueryRoutesResponse?, CallResult) -> Void) throws -> Lnrpc_LightningQueryRoutesCall {
+  @discardableResult
+  internal func queryRoutes(_ request: Lnrpc_QueryRoutesRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_QueryRoutesResponse?, CallResult) -> Void) throws -> Lnrpc_LightningQueryRoutesCall {
     return try Lnrpc_LightningQueryRoutesCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest) throws -> Lnrpc_NetworkInfo {
+  internal func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, metadata customMetadata: Metadata) throws -> Lnrpc_NetworkInfo {
     return try Lnrpc_LightningGetNetworkInfoCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, completion: @escaping (Lnrpc_NetworkInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNetworkInfoCall {
+  @discardableResult
+  internal func getNetworkInfo(_ request: Lnrpc_NetworkInfoRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_NetworkInfo?, CallResult) -> Void) throws -> Lnrpc_LightningGetNetworkInfoCall {
     return try Lnrpc_LightningGetNetworkInfoCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func stopDaemon(_ request: Lnrpc_StopRequest) throws -> Lnrpc_StopResponse {
+  internal func stopDaemon(_ request: Lnrpc_StopRequest, metadata customMetadata: Metadata) throws -> Lnrpc_StopResponse {
     return try Lnrpc_LightningStopDaemonCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func stopDaemon(_ request: Lnrpc_StopRequest, completion: @escaping (Lnrpc_StopResponse?, CallResult) -> Void) throws -> Lnrpc_LightningStopDaemonCall {
+  @discardableResult
+  internal func stopDaemon(_ request: Lnrpc_StopRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_StopResponse?, CallResult) -> Void) throws -> Lnrpc_LightningStopDaemonCall {
     return try Lnrpc_LightningStopDaemonCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Asynchronous. Server-streaming.
   /// Send the initial message.
   /// Use methods on the returned object to get streamed responses.
-  internal func subscribeChannelGraph(_ request: Lnrpc_GraphTopologySubscription, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelGraphCall {
+  internal func subscribeChannelGraph(_ request: Lnrpc_GraphTopologySubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelGraphCall {
     return try Lnrpc_LightningSubscribeChannelGraphCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func debugLevel(_ request: Lnrpc_DebugLevelRequest) throws -> Lnrpc_DebugLevelResponse {
+  internal func debugLevel(_ request: Lnrpc_DebugLevelRequest, metadata customMetadata: Metadata) throws -> Lnrpc_DebugLevelResponse {
     return try Lnrpc_LightningDebugLevelCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func debugLevel(_ request: Lnrpc_DebugLevelRequest, completion: @escaping (Lnrpc_DebugLevelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDebugLevelCall {
+  @discardableResult
+  internal func debugLevel(_ request: Lnrpc_DebugLevelRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_DebugLevelResponse?, CallResult) -> Void) throws -> Lnrpc_LightningDebugLevelCall {
     return try Lnrpc_LightningDebugLevelCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func feeReport(_ request: Lnrpc_FeeReportRequest) throws -> Lnrpc_FeeReportResponse {
+  internal func feeReport(_ request: Lnrpc_FeeReportRequest, metadata customMetadata: Metadata) throws -> Lnrpc_FeeReportResponse {
     return try Lnrpc_LightningFeeReportCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func feeReport(_ request: Lnrpc_FeeReportRequest, completion: @escaping (Lnrpc_FeeReportResponse?, CallResult) -> Void) throws -> Lnrpc_LightningFeeReportCall {
+  @discardableResult
+  internal func feeReport(_ request: Lnrpc_FeeReportRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_FeeReportResponse?, CallResult) -> Void) throws -> Lnrpc_LightningFeeReportCall {
     return try Lnrpc_LightningFeeReportCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest) throws -> Lnrpc_PolicyUpdateResponse {
+  internal func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, metadata customMetadata: Metadata) throws -> Lnrpc_PolicyUpdateResponse {
     return try Lnrpc_LightningUpdateChannelPolicyCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, completion: @escaping (Lnrpc_PolicyUpdateResponse?, CallResult) -> Void) throws -> Lnrpc_LightningUpdateChannelPolicyCall {
+  @discardableResult
+  internal func updateChannelPolicy(_ request: Lnrpc_PolicyUpdateRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_PolicyUpdateResponse?, CallResult) -> Void) throws -> Lnrpc_LightningUpdateChannelPolicyCall {
     return try Lnrpc_LightningUpdateChannelPolicyCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
   /// Synchronous. Unary.
-  internal func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest) throws -> Lnrpc_ForwardingHistoryResponse {
+  internal func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ForwardingHistoryResponse {
     return try Lnrpc_LightningForwardingHistoryCallBase(channel)
-      .run(request: request, metadata: metadata)
+      .run(request: request, metadata: customMetadata)
   }
   /// Asynchronous. Unary.
-  internal func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, completion: @escaping (Lnrpc_ForwardingHistoryResponse?, CallResult) -> Void) throws -> Lnrpc_LightningForwardingHistoryCall {
+  @discardableResult
+  internal func forwardingHistory(_ request: Lnrpc_ForwardingHistoryRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ForwardingHistoryResponse?, CallResult) -> Void) throws -> Lnrpc_LightningForwardingHistoryCall {
     return try Lnrpc_LightningForwardingHistoryCallBase(channel)
-      .start(request: request, metadata: metadata, completion: completion)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChannelBackup {
+    return try Lnrpc_LightningExportChannelBackupCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func exportChannelBackup(_ request: Lnrpc_ExportChannelBackupRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChannelBackup?, CallResult) -> Void) throws -> Lnrpc_LightningExportChannelBackupCall {
+    return try Lnrpc_LightningExportChannelBackupCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest, metadata customMetadata: Metadata) throws -> Lnrpc_ChanBackupSnapshot {
+    return try Lnrpc_LightningExportAllChannelBackupsCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func exportAllChannelBackups(_ request: Lnrpc_ChanBackupExportRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_ChanBackupSnapshot?, CallResult) -> Void) throws -> Lnrpc_LightningExportAllChannelBackupsCall {
+    return try Lnrpc_LightningExportAllChannelBackupsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot, metadata customMetadata: Metadata) throws -> Lnrpc_VerifyChanBackupResponse {
+    return try Lnrpc_LightningVerifyChanBackupCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func verifyChanBackup(_ request: Lnrpc_ChanBackupSnapshot, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_VerifyChanBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningVerifyChanBackupCall {
+    return try Lnrpc_LightningVerifyChanBackupCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest, metadata customMetadata: Metadata) throws -> Lnrpc_RestoreBackupResponse {
+    return try Lnrpc_LightningRestoreChannelBackupsCallBase(channel)
+      .run(request: request, metadata: customMetadata)
+  }
+  /// Asynchronous. Unary.
+  @discardableResult
+  internal func restoreChannelBackups(_ request: Lnrpc_RestoreChanBackupRequest, metadata customMetadata: Metadata, completion: @escaping (Lnrpc_RestoreBackupResponse?, CallResult) -> Void) throws -> Lnrpc_LightningRestoreChannelBackupsCall {
+    return try Lnrpc_LightningRestoreChannelBackupsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
+  }
+
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  internal func subscribeChannelBackups(_ request: Lnrpc_ChannelBackupSubscription, metadata customMetadata: Metadata, completion: ((CallResult) -> Void)?) throws -> Lnrpc_LightningSubscribeChannelBackupsCall {
+    return try Lnrpc_LightningSubscribeChannelBackupsCallBase(channel)
+      .start(request: request, metadata: customMetadata, completion: completion)
   }
 
 }
@@ -1219,6 +1978,7 @@ internal protocol Lnrpc_LightningProvider: ServiceProvider {
   func walletBalance(request: Lnrpc_WalletBalanceRequest, session: Lnrpc_LightningWalletBalanceSession) throws -> Lnrpc_WalletBalanceResponse
   func channelBalance(request: Lnrpc_ChannelBalanceRequest, session: Lnrpc_LightningChannelBalanceSession) throws -> Lnrpc_ChannelBalanceResponse
   func getTransactions(request: Lnrpc_GetTransactionsRequest, session: Lnrpc_LightningGetTransactionsSession) throws -> Lnrpc_TransactionDetails
+  func estimateFee(request: Lnrpc_EstimateFeeRequest, session: Lnrpc_LightningEstimateFeeSession) throws -> Lnrpc_EstimateFeeResponse
   func sendCoins(request: Lnrpc_SendCoinsRequest, session: Lnrpc_LightningSendCoinsSession) throws -> Lnrpc_SendCoinsResponse
   func listUnspent(request: Lnrpc_ListUnspentRequest, session: Lnrpc_LightningListUnspentSession) throws -> Lnrpc_ListUnspentResponse
   func subscribeTransactions(request: Lnrpc_GetTransactionsRequest, session: Lnrpc_LightningSubscribeTransactionsSession) throws -> ServerStatus?
@@ -1232,6 +1992,7 @@ internal protocol Lnrpc_LightningProvider: ServiceProvider {
   func getInfo(request: Lnrpc_GetInfoRequest, session: Lnrpc_LightningGetInfoSession) throws -> Lnrpc_GetInfoResponse
   func pendingChannels(request: Lnrpc_PendingChannelsRequest, session: Lnrpc_LightningPendingChannelsSession) throws -> Lnrpc_PendingChannelsResponse
   func listChannels(request: Lnrpc_ListChannelsRequest, session: Lnrpc_LightningListChannelsSession) throws -> Lnrpc_ListChannelsResponse
+  func subscribeChannelEvents(request: Lnrpc_ChannelEventSubscription, session: Lnrpc_LightningSubscribeChannelEventsSession) throws -> ServerStatus?
   func closedChannels(request: Lnrpc_ClosedChannelsRequest, session: Lnrpc_LightningClosedChannelsSession) throws -> Lnrpc_ClosedChannelsResponse
   func openChannelSync(request: Lnrpc_OpenChannelRequest, session: Lnrpc_LightningOpenChannelSyncSession) throws -> Lnrpc_ChannelPoint
   func openChannel(request: Lnrpc_OpenChannelRequest, session: Lnrpc_LightningOpenChannelSession) throws -> ServerStatus?
@@ -1259,6 +2020,11 @@ internal protocol Lnrpc_LightningProvider: ServiceProvider {
   func feeReport(request: Lnrpc_FeeReportRequest, session: Lnrpc_LightningFeeReportSession) throws -> Lnrpc_FeeReportResponse
   func updateChannelPolicy(request: Lnrpc_PolicyUpdateRequest, session: Lnrpc_LightningUpdateChannelPolicySession) throws -> Lnrpc_PolicyUpdateResponse
   func forwardingHistory(request: Lnrpc_ForwardingHistoryRequest, session: Lnrpc_LightningForwardingHistorySession) throws -> Lnrpc_ForwardingHistoryResponse
+  func exportChannelBackup(request: Lnrpc_ExportChannelBackupRequest, session: Lnrpc_LightningExportChannelBackupSession) throws -> Lnrpc_ChannelBackup
+  func exportAllChannelBackups(request: Lnrpc_ChanBackupExportRequest, session: Lnrpc_LightningExportAllChannelBackupsSession) throws -> Lnrpc_ChanBackupSnapshot
+  func verifyChanBackup(request: Lnrpc_ChanBackupSnapshot, session: Lnrpc_LightningVerifyChanBackupSession) throws -> Lnrpc_VerifyChanBackupResponse
+  func restoreChannelBackups(request: Lnrpc_RestoreChanBackupRequest, session: Lnrpc_LightningRestoreChannelBackupsSession) throws -> Lnrpc_RestoreBackupResponse
+  func subscribeChannelBackups(request: Lnrpc_ChannelBackupSubscription, session: Lnrpc_LightningSubscribeChannelBackupsSession) throws -> ServerStatus?
 }
 
 extension Lnrpc_LightningProvider {
@@ -1282,6 +2048,11 @@ extension Lnrpc_LightningProvider {
       return try Lnrpc_LightningGetTransactionsSessionBase(
         handler: handler,
         providerBlock: { try self.getTransactions(request: $0, session: $1 as! Lnrpc_LightningGetTransactionsSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/EstimateFee":
+      return try Lnrpc_LightningEstimateFeeSessionBase(
+        handler: handler,
+        providerBlock: { try self.estimateFee(request: $0, session: $1 as! Lnrpc_LightningEstimateFeeSessionBase) })
           .run()
     case "/lnrpc.Lightning/SendCoins":
       return try Lnrpc_LightningSendCoinsSessionBase(
@@ -1347,6 +2118,11 @@ extension Lnrpc_LightningProvider {
       return try Lnrpc_LightningListChannelsSessionBase(
         handler: handler,
         providerBlock: { try self.listChannels(request: $0, session: $1 as! Lnrpc_LightningListChannelsSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/SubscribeChannelEvents":
+      return try Lnrpc_LightningSubscribeChannelEventsSessionBase(
+        handler: handler,
+        providerBlock: { try self.subscribeChannelEvents(request: $0, session: $1 as! Lnrpc_LightningSubscribeChannelEventsSessionBase) })
           .run()
     case "/lnrpc.Lightning/ClosedChannels":
       return try Lnrpc_LightningClosedChannelsSessionBase(
@@ -1483,6 +2259,31 @@ extension Lnrpc_LightningProvider {
         handler: handler,
         providerBlock: { try self.forwardingHistory(request: $0, session: $1 as! Lnrpc_LightningForwardingHistorySessionBase) })
           .run()
+    case "/lnrpc.Lightning/ExportChannelBackup":
+      return try Lnrpc_LightningExportChannelBackupSessionBase(
+        handler: handler,
+        providerBlock: { try self.exportChannelBackup(request: $0, session: $1 as! Lnrpc_LightningExportChannelBackupSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/ExportAllChannelBackups":
+      return try Lnrpc_LightningExportAllChannelBackupsSessionBase(
+        handler: handler,
+        providerBlock: { try self.exportAllChannelBackups(request: $0, session: $1 as! Lnrpc_LightningExportAllChannelBackupsSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/VerifyChanBackup":
+      return try Lnrpc_LightningVerifyChanBackupSessionBase(
+        handler: handler,
+        providerBlock: { try self.verifyChanBackup(request: $0, session: $1 as! Lnrpc_LightningVerifyChanBackupSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/RestoreChannelBackups":
+      return try Lnrpc_LightningRestoreChannelBackupsSessionBase(
+        handler: handler,
+        providerBlock: { try self.restoreChannelBackups(request: $0, session: $1 as! Lnrpc_LightningRestoreChannelBackupsSessionBase) })
+          .run()
+    case "/lnrpc.Lightning/SubscribeChannelBackups":
+      return try Lnrpc_LightningSubscribeChannelBackupsSessionBase(
+        handler: handler,
+        providerBlock: { try self.subscribeChannelBackups(request: $0, session: $1 as! Lnrpc_LightningSubscribeChannelBackupsSessionBase) })
+          .run()
     default:
       throw HandleMethodError.unknownMethod
     }
@@ -1500,6 +2301,10 @@ fileprivate final class Lnrpc_LightningChannelBalanceSessionBase: ServerSessionU
 internal protocol Lnrpc_LightningGetTransactionsSession: ServerSessionUnary {}
 
 fileprivate final class Lnrpc_LightningGetTransactionsSessionBase: ServerSessionUnaryBase<Lnrpc_GetTransactionsRequest, Lnrpc_TransactionDetails>, Lnrpc_LightningGetTransactionsSession {}
+
+internal protocol Lnrpc_LightningEstimateFeeSession: ServerSessionUnary {}
+
+fileprivate final class Lnrpc_LightningEstimateFeeSessionBase: ServerSessionUnaryBase<Lnrpc_EstimateFeeRequest, Lnrpc_EstimateFeeResponse>, Lnrpc_LightningEstimateFeeSession {}
 
 internal protocol Lnrpc_LightningSendCoinsSession: ServerSessionUnary {}
 
@@ -1567,6 +2372,25 @@ fileprivate final class Lnrpc_LightningPendingChannelsSessionBase: ServerSession
 internal protocol Lnrpc_LightningListChannelsSession: ServerSessionUnary {}
 
 fileprivate final class Lnrpc_LightningListChannelsSessionBase: ServerSessionUnaryBase<Lnrpc_ListChannelsRequest, Lnrpc_ListChannelsResponse>, Lnrpc_LightningListChannelsSession {}
+
+internal protocol Lnrpc_LightningSubscribeChannelEventsSession: ServerSessionServerStreaming {
+  /// Send a message to the stream. Nonblocking.
+  func send(_ message: Lnrpc_ChannelEventUpdate, completion: @escaping (Error?) -> Void) throws
+  /// Do not call this directly, call `send()` in the protocol extension below instead.
+  func _send(_ message: Lnrpc_ChannelEventUpdate, timeout: DispatchTime) throws
+
+  /// Close the connection and send the status. Non-blocking.
+  /// This method should be called if and only if your request handler returns a nil value instead of a server status;
+  /// otherwise SwiftGRPC will take care of sending the status for you.
+  func close(withStatus status: ServerStatus, completion: (() -> Void)?) throws
+}
+
+internal extension Lnrpc_LightningSubscribeChannelEventsSession {
+  /// Send a message to the stream and wait for the send operation to finish. Blocking.
+  func send(_ message: Lnrpc_ChannelEventUpdate, timeout: DispatchTime = .distantFuture) throws { try self._send(message, timeout: timeout) }
+}
+
+fileprivate final class Lnrpc_LightningSubscribeChannelEventsSessionBase: ServerSessionServerStreamingBase<Lnrpc_ChannelEventSubscription, Lnrpc_ChannelEventUpdate>, Lnrpc_LightningSubscribeChannelEventsSession {}
 
 internal protocol Lnrpc_LightningClosedChannelsSession: ServerSessionUnary {}
 
@@ -1785,4 +2609,39 @@ fileprivate final class Lnrpc_LightningUpdateChannelPolicySessionBase: ServerSes
 internal protocol Lnrpc_LightningForwardingHistorySession: ServerSessionUnary {}
 
 fileprivate final class Lnrpc_LightningForwardingHistorySessionBase: ServerSessionUnaryBase<Lnrpc_ForwardingHistoryRequest, Lnrpc_ForwardingHistoryResponse>, Lnrpc_LightningForwardingHistorySession {}
+
+internal protocol Lnrpc_LightningExportChannelBackupSession: ServerSessionUnary {}
+
+fileprivate final class Lnrpc_LightningExportChannelBackupSessionBase: ServerSessionUnaryBase<Lnrpc_ExportChannelBackupRequest, Lnrpc_ChannelBackup>, Lnrpc_LightningExportChannelBackupSession {}
+
+internal protocol Lnrpc_LightningExportAllChannelBackupsSession: ServerSessionUnary {}
+
+fileprivate final class Lnrpc_LightningExportAllChannelBackupsSessionBase: ServerSessionUnaryBase<Lnrpc_ChanBackupExportRequest, Lnrpc_ChanBackupSnapshot>, Lnrpc_LightningExportAllChannelBackupsSession {}
+
+internal protocol Lnrpc_LightningVerifyChanBackupSession: ServerSessionUnary {}
+
+fileprivate final class Lnrpc_LightningVerifyChanBackupSessionBase: ServerSessionUnaryBase<Lnrpc_ChanBackupSnapshot, Lnrpc_VerifyChanBackupResponse>, Lnrpc_LightningVerifyChanBackupSession {}
+
+internal protocol Lnrpc_LightningRestoreChannelBackupsSession: ServerSessionUnary {}
+
+fileprivate final class Lnrpc_LightningRestoreChannelBackupsSessionBase: ServerSessionUnaryBase<Lnrpc_RestoreChanBackupRequest, Lnrpc_RestoreBackupResponse>, Lnrpc_LightningRestoreChannelBackupsSession {}
+
+internal protocol Lnrpc_LightningSubscribeChannelBackupsSession: ServerSessionServerStreaming {
+  /// Send a message to the stream. Nonblocking.
+  func send(_ message: Lnrpc_ChanBackupSnapshot, completion: @escaping (Error?) -> Void) throws
+  /// Do not call this directly, call `send()` in the protocol extension below instead.
+  func _send(_ message: Lnrpc_ChanBackupSnapshot, timeout: DispatchTime) throws
+
+  /// Close the connection and send the status. Non-blocking.
+  /// This method should be called if and only if your request handler returns a nil value instead of a server status;
+  /// otherwise SwiftGRPC will take care of sending the status for you.
+  func close(withStatus status: ServerStatus, completion: (() -> Void)?) throws
+}
+
+internal extension Lnrpc_LightningSubscribeChannelBackupsSession {
+  /// Send a message to the stream and wait for the send operation to finish. Blocking.
+  func send(_ message: Lnrpc_ChanBackupSnapshot, timeout: DispatchTime = .distantFuture) throws { try self._send(message, timeout: timeout) }
+}
+
+fileprivate final class Lnrpc_LightningSubscribeChannelBackupsSessionBase: ServerSessionServerStreamingBase<Lnrpc_ChannelBackupSubscription, Lnrpc_ChanBackupSnapshot>, Lnrpc_LightningSubscribeChannelBackupsSession {}
 

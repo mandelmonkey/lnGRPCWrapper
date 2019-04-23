@@ -196,14 +196,11 @@ extension Data {
         
     }
     
-    @objc public func startSetUpEnvironment(callback: @escaping (String?,String?) -> Void) {
+    @objc public func startSetUpEnvironment(chain:String,bootstrap:Bool,callback: @escaping (String?,String?) -> Void) {
         
         
         lndMobileAPI.currentLog("starting lnd");
-        
-        
-        
-        setUpEnvironment { (res, error) in
+        setUpEnvironment(chain: chain, bootstrap: bootstrap) { (res, error) in
             
             if(error != nil){
                 callback(res,error);
@@ -213,7 +210,10 @@ extension Data {
             
         }
         
+        
+        
     }
+    
     
     
     @objc public func startLND(callback: @escaping (String?,String?) -> Void) {
@@ -282,6 +282,20 @@ extension Data {
         }
     }
     
+    @objc public func exportAllChannelBackups(callback: @escaping (String?,String?) -> Void) {
+        lndMobileAPI.currentLog("exportAllChannelBackups");
+        do {
+            let request = try Lnrpc_ExportChannelBackupRequest().serializedData()
+            
+            let lndOp = ExportAllChannelBackups(callback)
+            
+            LndmobileExportAllChannelBackups(request, lndOp);
+            
+        } catch {
+            callback(nil,error.localizedDescription);
+        }
+    }
+    
     @objc public func channelBalance(callback: @escaping (String?,String?) -> Void) {
         
         do {
@@ -314,7 +328,7 @@ extension Data {
     
     
     
-    @objc public func createWallet(walletPassword: String,
+    @objc public func createWallet(walletPassword: String, recoveryWindow:Int32,
                                    cipherSeedMnemonic: [String],
                                    callback: @escaping (String?,String?) -> Void) {
         
@@ -334,6 +348,7 @@ extension Data {
             var request = Lnrpc_InitWalletRequest()
             request.cipherSeedMnemonic = cipherSeedMnemonic
             request.walletPassword = passwordData
+            request.recoveryWindow = recoveryWindow
             
             let serialReq = try request.serializedData()
             LndmobileInitWallet(serialReq, lndOp)
@@ -841,8 +856,7 @@ extension Data {
             completion( "success",nil)
         }
         
-        func onError(_ p
-            0: Error!) {
+        func onError(_ p0: Error!) {
             completion(nil,"error")
         }
     }
@@ -924,10 +938,10 @@ extension Data {
                     
                     completion( res,nil)
                     
-                case .confirmation(let confirmUpdate):
+                /*case .confirmation(let confirmUpdate):
                     let res = try confirmUpdate.jsonString();
                     
-                    completion( res,nil)
+                    completion( res,nil)*/
                 case .chanOpen(let openUpdate):
                     let res = try openUpdate.jsonString();
                     
@@ -1442,6 +1456,33 @@ extension Data {
         }
     }
     
+    private class ExportAllChannelBackups: NSObject, LndmobileCallbackProtocol {
+        
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            
+            do {
+                let response = try Lnrpc_ChanBackupSnapshot(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
     @objc public func deleteData(callback: @escaping (String?,String?) -> Void) {
         
         let appSupportPath = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.path
@@ -1475,9 +1516,11 @@ extension Data {
     
     
     
-    func setUpEnvironment(callback: @escaping (String?,String?) -> Void) {
+    func setUpEnvironment(chain:String,bootstrap:Bool,callback: @escaping (String?,String?) -> Void) {
         
         getenv("HOME")
+        
+      
         
         lndMobileAPI.currentLog("ip is "+getIPAddress()!);
         
@@ -1528,37 +1571,13 @@ extension Data {
                 callback(nil,"Failed to copy lnd.conf from bundle to Application Support/lnd/lnd.conf.\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
                 return;
             }
+            lndMobileAPI.currentLog("conf copied");
+            
         }else{
             lndMobileAPI.currentLog("lndconf found");
             
         }
         
-        
-        guard let peersSourceURL = Bundle.main.url(forResource: "peers", withExtension: "json") else {
-            print("Cannot get peers.json from Bundle")
-            return;
-        }
-        
-        
-        let peersFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/testnet", isDirectory: true)  // TODO: Make configurable between Mainnet & Testnnet
-        let peersDestinationURL = peersFolderURL.appendingPathComponent("peers.json", isDirectory: false)
-        
-        print(peersDestinationURL);
-        // Check if file and directory. Create/copy as necassary
-        if !FileManager.default.fileExists(atPath: peersDestinationURL.path) {
-            do {
-                if !FileManager.default.fileExists(atPath: peersFolderURL.path, isDirectory: nil) {
-                    try FileManager.default.createDirectory(atPath: peersFolderURL.path, withIntermediateDirectories: true)
-                }
-                try FileManager.default.copyItem(at: peersSourceURL, to: peersDestinationURL)
-                usleep(100000)  // Sleep for 100ms for file to settle
-            } catch CocoaError.fileWriteFileExists {
-                print("peers.json already exist at \(peersFolderURL.absoluteString)")
-            } catch {
-                let nsError = error as NSError
-                print("Failed to copy peers.json from bundle to \(peersDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-            }
-        }
         
         
         // Prevent the entire lnd directory from being backed-up
@@ -1576,6 +1595,146 @@ extension Data {
         
         // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html for now
         signal(SIGPIPE, SIG_IGN)
+        
+        /*
+         guard let peersSourceURL = Bundle.main.url(forResource: "peers", withExtension: "json") else {
+         print("Cannot get peers.json from Bundle")
+         return;
+         }
+         
+         
+         let peersFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)  // TODO: Make configurable between Mainnet & Testnnet
+         let peersDestinationURL = peersFolderURL.appendingPathComponent("peers.json", isDirectory: false)
+         
+         print(peersDestinationURL);
+         // Check if file and directory. Create/copy as necassary
+         if !FileManager.default.fileExists(atPath: peersDestinationURL.path) {
+         do {
+         if !FileManager.default.fileExists(atPath: peersFolderURL.path, isDirectory: nil) {
+         try FileManager.default.createDirectory(atPath: peersFolderURL.path, withIntermediateDirectories: true)
+         }
+         try FileManager.default.copyItem(at: peersSourceURL, to: peersDestinationURL)
+         usleep(100000)  // Sleep for 100ms for file to settle
+         } catch CocoaError.fileWriteFileExists {
+         print("peers.json already exist at \(peersFolderURL.absoluteString)")
+         } catch {
+         let nsError = error as NSError
+         print("Failed to copy peers.json from bundle to \(peersDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
+         }
+         }*/
+        
+        if(bootstrap){
+            
+            guard let neutrinoSourceURL = Bundle.main.url(forResource: "neutrino", withExtension: "db",subdirectory:chain) else {
+                lndMobileAPI.currentLog("Cannot get neutrinoSourceURL from Bundle")
+                callback("success",nil)
+                return;
+            }
+            
+            
+            let  neutrinoFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
+            let  neutrinoDestinationURL = neutrinoFolderURL.appendingPathComponent("neutrino.db", isDirectory: false)
+            
+            lndMobileAPI.currentLog(neutrinoDestinationURL.path);
+            
+            // Check if file and directory. Create/copy as necassary
+            if !FileManager.default.fileExists(atPath:  neutrinoDestinationURL.path) {
+                do {
+                    
+                    lndMobileAPI.currentLog("copying neutrino.db");
+                    if !FileManager.default.fileExists(atPath:  neutrinoFolderURL.path, isDirectory: nil) {
+                        try FileManager.default.createDirectory(atPath:  neutrinoFolderURL.path, withIntermediateDirectories: true)
+                    }
+                    try FileManager.default.copyItem(at:  neutrinoSourceURL, to:  neutrinoDestinationURL)
+                    usleep(100000)  // Sleep for 100ms for file to settle
+                    lndMobileAPI.currentLog("copied neutrino.db");
+                    
+                } catch CocoaError.fileWriteFileExists {
+                    lndMobileAPI.currentLog("neutrino.db already exist at \( neutrinoFolderURL.absoluteString)");
+                    
+                    print("neutrino.db already exist at \( neutrinoFolderURL.absoluteString)")
+                } catch {
+                    let nsError = error as NSError
+                    lndMobileAPI.currentLog("Failed to copy neutrino.db from bundle to \( neutrinoDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)");
+                    
+                    print("Failed to copy neutrino.db from bundle to \( neutrinoDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
+                }
+            }else{
+                lndMobileAPI.currentLog("not copying neutrino.db");
+                
+            }
+            
+            
+            lndMobileAPI.currentLog("copying block_headers");
+            
+            guard let bhSourceURL = Bundle.main.url(forResource: "block_headers", withExtension: "bin", subdirectory:chain) else {
+                lndMobileAPI.currentLog("Cannot get block_headers from Bundle")
+                callback("success",nil)
+                return;
+            }
+            
+            let  bhFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
+            let  bhDestinationURL = bhFolderURL.appendingPathComponent("block_headers.bin", isDirectory: false)
+            
+            lndMobileAPI.currentLog(bhDestinationURL.path);
+            
+            // Check if file and directory. Create/copy as necassary
+            if !FileManager.default.fileExists(atPath:  bhDestinationURL.path) {
+                do {
+                    if !FileManager.default.fileExists(atPath:  bhFolderURL.path, isDirectory: nil) {
+                        try FileManager.default.createDirectory(atPath:  bhFolderURL.path, withIntermediateDirectories: true)
+                    }
+                    try FileManager.default.copyItem(at:  bhSourceURL, to:  bhDestinationURL)
+                    usleep(100000)  // Sleep for 100ms for file to settle
+                    lndMobileAPI.currentLog("copied block_headers");
+                    
+                } catch CocoaError.fileWriteFileExists {
+                    lndMobileAPI.currentLog("block_headers.bin already exist at \( bhFolderURL.absoluteString)")
+                } catch {
+                    let nsError = error as NSError
+                    lndMobileAPI.currentLog("Failed to copy block_headers.bin from bundle to \(bhDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
+                }
+            }
+            
+            lndMobileAPI.currentLog("copying reg_filter_headers");
+            
+            
+            guard let regFilterHeadersSourceURL = Bundle.main.url(forResource: "reg_filter_headers", withExtension: "bin",subdirectory:chain) else {
+                lndMobileAPI.currentLog("Cannot get regFilterHeaders from Bundle")
+                callback("success",nil)
+                return;
+            }
+            
+            let  regFilterHeadersFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
+            let  regFilterHeadersDestinationURL = regFilterHeadersFolderURL.appendingPathComponent("reg_filter_headers.bin", isDirectory: false)
+            
+            print( regFilterHeadersDestinationURL);
+            // Check if file and directory. Create/copy as necassary
+            if !FileManager.default.fileExists(atPath:  regFilterHeadersDestinationURL.path) {
+                do {
+                    if !FileManager.default.fileExists(atPath: regFilterHeadersFolderURL.path, isDirectory: nil) {
+                        try FileManager.default.createDirectory(atPath: regFilterHeadersFolderURL.path, withIntermediateDirectories: true)
+                    }
+                    try FileManager.default.copyItem(at:  regFilterHeadersSourceURL, to: regFilterHeadersDestinationURL)
+                    usleep(100000)  // Sleep for 100ms for file to settle
+                    lndMobileAPI.currentLog("copied reg_filter_headers");
+                    
+                } catch CocoaError.fileWriteFileExists {
+                    lndMobileAPI.currentLog("reg_filter_headers.bin already exist at \( regFilterHeadersFolderURL.absoluteString)")
+                } catch {
+                    let nsError = error as NSError
+                    lndMobileAPI.currentLog("Failed to copy reg_filter_headers.bin from bundle to \(regFilterHeadersDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
+                }
+            }
+        }else{
+            lndMobileAPI.currentLog("no bootstrapping");
+        }
+        
+        
+        
+         lndMobileAPI.currentLog("finsihed bootstrap");
+        
+      
         
         callback("success",nil)
         
