@@ -113,10 +113,10 @@ extension Data {
         return ipAddressString
     }
     
+    @objc
     public override init() {
         
-        currentCallback = {(res, error) in}
-        // lndMobileAPI.currentLog = {(log) in}
+        currentCallback = {(res, error) in} 
     }
     
     @objc public func setLog(callback: @escaping (String?) -> Void) {
@@ -175,9 +175,18 @@ extension Data {
         do {
             
             var req = Lnrpc_SendCoinsRequest()
-            req.amount = amount;
+            
+            if(amount == -1){
+                req.sendAll = true;
+            }else{
+                req.amount = amount;
+            }
+            
             req.addr = address;
-            req.satPerByte = fee;
+            
+            if(fee != -1){
+                req.satPerByte = fee;
+            }
             
             
             
@@ -296,7 +305,7 @@ extension Data {
         }
     }
     
-    @objc public func channelBalance(callback: @escaping (String?,String?) -> Void) {
+    @objc public func getChannelBalance(callback: @escaping (String?,String?) -> Void) {
         
         do {
             let request = try Lnrpc_ChannelBalanceRequest().serializedData();
@@ -311,7 +320,7 @@ extension Data {
         }
     }
     
-    @objc public func walletBalance(callback: @escaping (String?,String?) -> Void) {
+    @objc public func getWalletBalance(callback: @escaping (String?,String?) -> Void) {
         
         do {
             let request = try Lnrpc_WalletBalanceRequest().serializedData();
@@ -329,7 +338,7 @@ extension Data {
     
     
     @objc public func createWallet(walletPassword: String, recoveryWindow:Int32,
-                                   cipherSeedMnemonic: [String],
+                                   cipherSeedMnemonic: [String],channelBackup: String,
                                    callback: @escaping (String?,String?) -> Void) {
         
         currentCallback = callback;
@@ -348,7 +357,23 @@ extension Data {
             var request = Lnrpc_InitWalletRequest()
             request.cipherSeedMnemonic = cipherSeedMnemonic
             request.walletPassword = passwordData
-            request.recoveryWindow = recoveryWindow
+            if(recoveryWindow != -1){
+                lndMobileAPI.currentLog("setting recovery mode")
+                
+                request.recoveryWindow = recoveryWindow
+            }
+            
+            if(channelBackup != ""){
+            
+            lndMobileAPI.currentLog("setting channel backup")
+                
+            var snapshot = Lnrpc_ChanBackupSnapshot.init()
+            var multi = Lnrpc_MultiChanBackup.init();
+                multi.multiChanBackup = Data(base64Encoded: channelBackup)!;
+            snapshot.multiChanBackup = multi;
+        
+            request.channelBackups = snapshot;
+            }
             
             let serialReq = try request.serializedData()
             LndmobileInitWallet(serialReq, lndOp)
@@ -502,7 +527,7 @@ extension Data {
     }
     
     
-    @objc public func openChannel(localFundingAmount:Int64, pubkey:String,  callback: @escaping (String?,String?) -> Void) {
+    @objc public func openChannel(localFundingAmount:Int64, pubkey:String, isPrivate:Bool, callback: @escaping (String?,String?) -> Void) {
         
         do {
             lndMobileAPI.currentLog("open channel");
@@ -510,6 +535,7 @@ extension Data {
             
             req.localFundingAmount = localFundingAmount;
             
+            req.private = isPrivate;
             
             guard let nodePubKeyData = Data(hexString: pubkey) else {
                 lndMobileAPI.currentLog("Node Pub Key should have been validated ahead of time")
@@ -607,7 +633,7 @@ extension Data {
         }
     }
     
-    @objc public func subscibeTransactions(callback: @escaping (String?,String?) -> Void) {
+    @objc public func subscribeTransactions(callback: @escaping (String?,String?) -> Void) {
         do {
             let req = Lnrpc_GetTransactionsRequest();
             
@@ -621,7 +647,7 @@ extension Data {
         }
     }
     
-    @objc public func subscibeInvoices(callback: @escaping (String?,String?) -> Void) {
+    @objc public func subscribeInvoices(callback: @escaping (String?,String?) -> Void) {
         do {
             let req = Lnrpc_InvoiceSubscription();
             
@@ -762,6 +788,23 @@ extension Data {
     }
     
     
+    @objc public func lookUpInvoice(rhash:String, callback: @escaping (String?,String?) -> Void) {
+        lndMobileAPI.currentLog("looking up invoice");
+        do {
+            var request = Lnrpc_PaymentHash();
+            request.rHashStr = rhash;
+            let data = try request.serializedData();
+            
+            let lndOp = LookUpInvoice(callback)
+            
+            LndmobileLookupInvoice(data, lndOp);
+            
+        } catch {
+            callback(nil,error.localizedDescription);
+        }
+    }
+    
+    
     @objc public func addInvoice(amount:Int64, expiry:Int64, memo:String, callback: @escaping (String?,String?) -> Void) {
         do {
             
@@ -811,11 +854,14 @@ extension Data {
     
     
     
-    @objc public func unlockWallet(walletPassword: String,
+    @objc public func unlockWallet(walletPassword: String,recoveryWindow:Int32, channelBackup: String,
                                    callback: @escaping (String?,String?) -> Void) {
+        
+        lndMobileAPI.currentLog("LN unlock Wallet Request Start")
         
         currentCallback = callback;
         guard let passwordData = walletPassword.data(using: .utf8) else {
+            lndMobileAPI.currentLog("password nil")
             
             callback(nil,"password error");
             return;
@@ -830,12 +876,33 @@ extension Data {
             var request = Lnrpc_UnlockWalletRequest()
             request.walletPassword = passwordData
             
+            if(recoveryWindow != -1){
+                lndMobileAPI.currentLog("setting recovery window "+String(recoveryWindow))
+                
+                request.recoveryWindow = recoveryWindow
+            }
+            
+            if(channelBackup != ""){
+                
+                lndMobileAPI.currentLog("setting channel backup "+channelBackup)
+                
+                var snapshot = Lnrpc_ChanBackupSnapshot.init()
+                var multi = Lnrpc_MultiChanBackup.init();
+                multi.multiChanBackup = Data(base64Encoded: channelBackup)!;
+                snapshot.multiChanBackup = multi;
+                
+                request.channelBackups = snapshot;
+            }
+            
             let serialReq = try request.serializedData()
+            lndMobileAPI.currentLog("LN unlock Wallet Request continue 1")
             LndmobileUnlockWallet(serialReq, lndOp)
+            lndMobileAPI.currentLog("LN unlock Wallet Request continue 2")
             
         } catch {
+            lndMobileAPI.currentLog("error1:"+error.localizedDescription)
             
-            callback(nil,error.localizedDescription)
+            callback(nil,"error1:"+error.localizedDescription)
             
         }
     }
@@ -857,7 +924,7 @@ extension Data {
         }
         
         func onError(_ p0: Error!) {
-            completion(nil,"error")
+            completion(nil,"error2:"+p0.localizedDescription)
         }
     }
     
@@ -1456,6 +1523,34 @@ extension Data {
         }
     }
     
+    private class LookUpInvoice: NSObject, LndmobileCallbackProtocol {
+        
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            print("LN Stop Daemon Success!")
+            
+            do {
+                let response = try Lnrpc_Invoice(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
     private class ExportAllChannelBackups: NSObject, LndmobileCallbackProtocol {
         
         private var completion:((String?,String?) -> (Void));
@@ -1596,32 +1691,6 @@ extension Data {
         // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html for now
         signal(SIGPIPE, SIG_IGN)
         
-        /*
-         guard let peersSourceURL = Bundle.main.url(forResource: "peers", withExtension: "json") else {
-         print("Cannot get peers.json from Bundle")
-         return;
-         }
-         
-         
-         let peersFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)  // TODO: Make configurable between Mainnet & Testnnet
-         let peersDestinationURL = peersFolderURL.appendingPathComponent("peers.json", isDirectory: false)
-         
-         print(peersDestinationURL);
-         // Check if file and directory. Create/copy as necassary
-         if !FileManager.default.fileExists(atPath: peersDestinationURL.path) {
-         do {
-         if !FileManager.default.fileExists(atPath: peersFolderURL.path, isDirectory: nil) {
-         try FileManager.default.createDirectory(atPath: peersFolderURL.path, withIntermediateDirectories: true)
-         }
-         try FileManager.default.copyItem(at: peersSourceURL, to: peersDestinationURL)
-         usleep(100000)  // Sleep for 100ms for file to settle
-         } catch CocoaError.fileWriteFileExists {
-         print("peers.json already exist at \(peersFolderURL.absoluteString)")
-         } catch {
-         let nsError = error as NSError
-         print("Failed to copy peers.json from bundle to \(peersDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-         }
-         }*/
         
         if(bootstrap){
             

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Starscream
 
 import Lndmobile
 class RemoteRPCConfiguration {
@@ -84,47 +83,29 @@ private extension Lnrpc_LightningServiceClient {
         try? metadata.add(key: "macaroon", value: configuration.macaroon)
     }
 }
-@objc public class grpcAPI: NSObject, WebSocketDelegate {
+@objc public class grpcAPI: NSObject {
     
-    var config:RemoteRPCConfiguration;
-    private let rpc: Lnrpc_LightningService
-    var socket = WebSocket(url: URL(string: "ws://lit-castle-74426.herokuapp.com")!, protocols: ["chat"])
-    
-    var webSocketCallback :(String?,Error?) -> Void;
-    
-    public func websocketDidConnect(socket: WebSocketClient) {
-        print("ocnnect");
-        webSocketCallback("connected",nil);
-    }
-    
-    public func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-         webSocketCallback("disconnected",nil);
-    }
-    
-    public func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-          webSocketCallback(text,nil);
-    }
-    
-    public func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
+    var config:RemoteRPCConfiguration? = nil
+    var rpc: Lnrpc_LightningService? = nil
+ 
+    @objc public override init() {
         
-    }
     
-  
-    @objc public init(url:String,certificate:String,macaroon:String) {
-    
-        func dummyCallback(one:String?,two:Error?)->Void{
-            
-        }
-        config = RemoteRPCConfiguration.init(url: url,certificate: certificate,macaroon: macaroon);
-        rpc = Lnrpc_LightningServiceClient.init(configuration: config);
-        webSocketCallback = dummyCallback;
         super.init();
+    }
+   
+    @objc public func setUp(url:String,certificate:String,macaroon:String) {
+    
+       
+        config = RemoteRPCConfiguration.init(url: url,certificate: certificate,macaroon: macaroon);
+        rpc = Lnrpc_LightningServiceClient.init(configuration: config!);
+    
     }
     
     @objc public func getInfo(callback: @escaping (String?,String?) -> Void) {
         do {
             
-            _ = try rpc.getInfo(Lnrpc_GetInfoRequest()) { response, callResult in
+            _ = try rpc!.getInfo(Lnrpc_GetInfoRequest()) { response, callResult in
             
                 do{
                     
@@ -154,7 +135,7 @@ private extension Lnrpc_LightningServiceClient {
     @objc public func exportAllChannelBackups(callback: @escaping (String?,String?) -> Void) {
         do {
             
-            _ = try rpc.exportAllChannelBackups(Lnrpc_ChanBackupExportRequest()) { response, callResult in
+            _ = try rpc!.exportAllChannelBackups(Lnrpc_ChanBackupExportRequest()) { response, callResult in
                 
                 do{
                     
@@ -183,7 +164,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func getWalletBalance(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.walletBalance(Lnrpc_WalletBalanceRequest()) { response, callResult in
+            _ = try rpc!.walletBalance(Lnrpc_WalletBalanceRequest()) { response, callResult in
                 
                 do{
                     
@@ -212,7 +193,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func getChannelBalance(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.channelBalance(Lnrpc_ChannelBalanceRequest()) { response, callResult in
+            _ = try rpc!.channelBalance(Lnrpc_ChannelBalanceRequest()) { response, callResult in
                 
                 do{
                     
@@ -241,7 +222,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func getTransactions(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.getTransactions(Lnrpc_GetTransactionsRequest()) { response, callResult in
+            _ = try rpc!.getTransactions(Lnrpc_GetTransactionsRequest()) { response, callResult in
                 
                 
                 do{
@@ -272,7 +253,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func listChannels(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.listChannels(Lnrpc_ListChannelsRequest()) { response, callResult in
+            _ = try rpc!.listChannels(Lnrpc_ListChannelsRequest()) { response, callResult in
                 
                 
                 do{
@@ -307,7 +288,7 @@ private extension Lnrpc_LightningServiceClient {
             var req = Lnrpc_ListInvoiceRequest();
             req.reversed = true;
             req.numMaxInvoices = 100;
-            _ = try rpc.listInvoices(req) { response, callResult in
+            _ = try rpc!.listInvoices(req) { response, callResult in
                 
                 do{
                     
@@ -337,7 +318,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func pendingChannels(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.pendingChannels(Lnrpc_PendingChannelsRequest()) { response, callResult in
+            _ = try rpc!.pendingChannels(Lnrpc_PendingChannelsRequest()) { response, callResult in
                 
                 
                 do{
@@ -369,7 +350,7 @@ private extension Lnrpc_LightningServiceClient {
     
     @objc public func listPayments(callback: @escaping (String?,String?) -> Void) {
         do {
-            _ = try rpc.listPayments(Lnrpc_ListPaymentsRequest()) { response, callResult in
+            _ = try rpc!.listPayments(Lnrpc_ListPaymentsRequest()) { response, callResult in
                 
               
                 do{
@@ -407,7 +388,7 @@ private extension Lnrpc_LightningServiceClient {
         }
             do {
                 
-            _ = try rpc.sendPaymentSync(req) { response, error in
+            _ = try rpc!.sendPaymentSync(req) { response, error in
                    do {
                 if !error.success {
                    callback("error send",error.statusMessage)
@@ -436,6 +417,7 @@ private extension Lnrpc_LightningServiceClient {
             
         
     }
+    
    
     @objc public func newAddress(addressType:String, callback: @escaping (String?,String?) -> Void) {
         do {
@@ -447,7 +429,7 @@ private extension Lnrpc_LightningServiceClient {
             }
             
             
-            _ = try rpc.newAddress(req) { response, callResult in
+            _ = try rpc!.newAddress(req) { response, callResult in
                 
                 do{
                     
@@ -483,7 +465,7 @@ private extension Lnrpc_LightningServiceClient {
             
             req.payReq = payReq;
             
-            _ = try rpc.decodePayReq(req) { response, callResult in
+            _ = try rpc!.decodePayReq(req) { response, callResult in
                 
                 do{
                     
@@ -520,7 +502,7 @@ private extension Lnrpc_LightningServiceClient {
             req.expiry = expiry;
             
             
-            _ = try rpc.addInvoice(req) { response, callResult in
+            _ = try rpc!.addInvoice(req) { response, callResult in
                 
                 do{
                     
@@ -556,7 +538,7 @@ private extension Lnrpc_LightningServiceClient {
             req.rHashStr = rhash;
             
             
-            _ = try rpc.lookupInvoice(req) { response, callResult in
+            _ = try rpc!.lookupInvoice(req) { response, callResult in
                 
                 do{
                     
@@ -595,7 +577,7 @@ private extension Lnrpc_LightningServiceClient {
             req.addr = lnAddr;
             
             
-            _ = try rpc.connectPeer(req) { response, callResult in
+            _ = try rpc!.connectPeer(req) { response, callResult in
                 
                 do{
                     
@@ -624,14 +606,15 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
-    @objc public func openChannel(localFundingAmount:Int64, pubkey:String, callback: @escaping (String?,String?) -> Void) {
+    @objc public func openChannel(localFundingAmount:Int64, pubkey:String, isPrivate:Bool, callback: @escaping (String?,String?) -> Void) {
         do {
             
             var req = Lnrpc_OpenChannelRequest();
             req.localFundingAmount = localFundingAmount;
             req.nodePubkeyString = pubkey;
+            req.private = isPrivate;
             
-            _ = try rpc.openChannelSync(req) { response, callResult in
+            _ = try rpc!.openChannelSync(req) { response, callResult in
                 
                 do{
                     
@@ -716,10 +699,10 @@ private extension Lnrpc_LightningServiceClient {
         
     }
     
-    @objc public func subscibeInvoices(callback: @escaping (String?,String?) -> Void) {
+    @objc public func subscribeInvoices(callback: @escaping (String?,String?) -> Void) {
       
               do {
-                    let call = try rpc.subscribeInvoices(Lnrpc_InvoiceSubscription(), completion: { print(#function, $0) })
+                    let call = try rpc!.subscribeInvoices(Lnrpc_InvoiceSubscription(), completion: { print(#function, $0) })
                     try receiveInvoicesUpdate(call: call, callback: callback)
                 } catch {
                    callback("error subscribe",error.localizedDescription)
@@ -727,10 +710,10 @@ private extension Lnrpc_LightningServiceClient {
         
     }
     
-    @objc public func subscibeTransactions(callback: @escaping (String?,String?) -> Void) {
+    @objc public func subscribeTransactions(callback: @escaping (String?,String?) -> Void) {
         
         do {
-            let call = try rpc.subscribeTransactions(Lnrpc_GetTransactionsRequest(), completion: { print(#function, $0) })
+            let call = try rpc!.subscribeTransactions(Lnrpc_GetTransactionsRequest(), completion: { print(#function, $0) })
             try receiveTransactionsUpdate(call: call, callback: callback)
         } catch {
             callback("error subscribe",error.localizedDescription)
@@ -771,7 +754,7 @@ private extension Lnrpc_LightningServiceClient {
         
         
         do {
-                let call = try rpc.closeChannel(req, completion: {  print(#function, $0)  })
+                let call = try rpc!.closeChannel(req, completion: {  print(#function, $0)  })
                 
                 try receiveCloseChannelUpdate(call: call, callback:callback)
             } catch {
@@ -785,7 +768,7 @@ private extension Lnrpc_LightningServiceClient {
         do {
             var req = Lnrpc_NodeInfoRequest();
             req.pubKey = pubkey;
-            _ = try rpc.getNodeInfo(req) { response, callResult in
+            _ = try rpc!.getNodeInfo(req) { response, callResult in
                 
                 do{
                     
@@ -820,11 +803,17 @@ private extension Lnrpc_LightningServiceClient {
         do {
             
             var req = Lnrpc_SendCoinsRequest()
-            req.amount = amount;
+            if(amount == -1){
+                req.sendAll = true;
+            }else{
+                req.amount = amount;
+            }
             req.addr = address;
-            req.satPerByte = fee;
+            if(fee != -1){
+                req.satPerByte = fee;
+            }
             
-            _ = try rpc.sendCoins(req) { response, callResult in
+            _ = try rpc!.sendCoins(req) { response, callResult in
                 
                 do{
                     
@@ -853,26 +842,7 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
-    deinit {
-        socket.disconnect(forceTimeout: 0)
-        socket.delegate = nil
-    }
-      @objc public func startWebSocket(url:String, callback: @escaping (String?,Error?) -> Void){
-        webSocketCallback = callback;
-        socket = WebSocket(url: URL(string: url)!, protocols: ["chat"])
-        socket.delegate = self
-        
-        socket.connect()
-
-        
-        
-    }
     
-    @objc public func sendWebSocketMessage(msg:String){
-        socket.write(string: msg)
-        
-        
-    }
     
     func stringToBytes(_ string: String) -> [UInt8]? {
         let length = string.characters.count
