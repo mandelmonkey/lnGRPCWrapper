@@ -205,25 +205,6 @@ extension Data {
         
     }
     
-    @objc public func startSetUpEnvironment(chain:String,bootstrap:Bool,callback: @escaping (String?,String?) -> Void) {
-        
-        
-        lndMobileAPI.currentLog("starting lnd");
-        setUpEnvironment(chain: chain, bootstrap: bootstrap) { (res, error) in
-            
-            if(error != nil){
-                callback(res,error);
-                return;
-            }
-            callback("env created",nil);
-            
-        }
-        
-        
-        
-    }
-    
-    
     
     @objc public func startLND(callback: @escaping (String?,String?) -> Void) {
         
@@ -556,7 +537,7 @@ extension Data {
             
         }
     }
-    
+    /*
     @objc public func sendPaymentSync(paymentRequest:String,amount:Int64, callback: @escaping (String?,String?) -> Void) {
         do {
             var req = Lnrpc_SendRequest();
@@ -576,7 +557,7 @@ extension Data {
             
         }
         
-    }
+    }*/
     
     @objc public func sendPayment(paymentRequest:String,amount:Int64, callback: @escaping (String?,String?) -> Void) {
         do {
@@ -717,7 +698,7 @@ extension Data {
         }
     }
     
-    private class SendPayment: NSObject, LndmobileCallbackProtocol {
+    private class SendPayment: NSObject, LndmobileRecvStreamProtocol {
         private var completion:((String?,String?) -> (Void));
         
         
@@ -801,6 +782,43 @@ extension Data {
             
         } catch {
             callback(nil,error.localizedDescription);
+        }
+    }
+    
+    @objc public func signMessage(message:String, callback: @escaping (String?,String?) -> Void) {
+        do {
+            var req = Lnrpc_SignMessageRequest();
+            req.msg = message.data(using: .utf8)!
+            
+            
+            
+            let lndOp = SignMessage(callback)
+            
+            LndmobileSignMessage(try req.serializedData(), lndOp);
+            
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+            
+        }
+    }
+    
+    @objc public func verifyMessage(message:String, signature:String, callback: @escaping (String?,String?) -> Void) {
+        do {
+            var req = Lnrpc_VerifyMessageRequest();
+            req.msg = message.data(using: .utf8)!
+            req.signature = signature;
+            
+            
+            
+            let lndOp = VerifyMessage(callback)
+            
+            LndmobileVerifyMessage(try req.serializedData(), lndOp);
+            
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+            
         }
     }
     
@@ -977,7 +995,7 @@ extension Data {
     }
     
     
-    private class OpenChannel: NSObject, LndmobileCallbackProtocol {
+    private class OpenChannel: NSObject, LndmobileRecvStreamProtocol {
         private var completion:((String?,String?) -> (Void));
         
         
@@ -1042,7 +1060,7 @@ extension Data {
     
     
     
-    private class CloseChannel: NSObject, LndmobileCallbackProtocol {
+    private class CloseChannel: NSObject, LndmobileRecvStreamProtocol {
         private var completion:((String?,String?) -> (Void));
         
         
@@ -1154,6 +1172,60 @@ extension Data {
         }
     }
     
+    private class SignMessage: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            
+            do {
+                
+                let response = try  Lnrpc_SignMessageResponse(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
+    private class VerifyMessage: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            
+            do {
+                
+                let response = try  Lnrpc_VerifyMessageResponse(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
     private class AddInvoice: NSObject, LndmobileCallbackProtocol {
         private var completion:((String?,String?) -> (Void));
         
@@ -1182,7 +1254,7 @@ extension Data {
         }
     }
     
-    private class SubscribeTransactions: NSObject, LndmobileCallbackProtocol {
+    private class SubscribeTransactions: NSObject, LndmobileRecvStreamProtocol {
         private var completion:((String?,String?) -> (Void));
         
         init(_ completion: @escaping (String?,String?) -> Void) {
@@ -1208,7 +1280,7 @@ extension Data {
     }
     
     
-    private class SubscribeInvoices: NSObject, LndmobileCallbackProtocol {
+    private class SubscribeInvoices: NSObject, LndmobileRecvStreamProtocol {
         private var completion:((String?,String?) -> (Void));
         
         init(_ completion: @escaping (String?,String?) -> Void) {
@@ -1578,247 +1650,13 @@ extension Data {
         }
     }
     
-    @objc public func deleteData(callback: @escaping (String?,String?) -> Void) {
-        
-        let appSupportPath = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.path
-        
-        self.directoryPath = appSupportPath! + "/lnd"
-        
-        
-        if !FileManager.default.fileExists(atPath: self.directoryPath) {
-            
-            callback("doesn't exist",nil)
-            return;
-        }
-        
-        
-        
-        do {
-            try FileManager.default.removeItem(atPath: self.directoryPath);
-            
-        }
-        catch let error as NSError {
-            print("Ooops! Something went wrong: \(error)")
-            
-            callback(nil,"error deleting");
-        }
-        
-        
-        callback("success",nil)
-        
-        
-    }
-    
-    
-    
-    func setUpEnvironment(chain:String,bootstrap:Bool,callback: @escaping (String?,String?) -> Void) {
-        
-        getenv("HOME")
-        
-      
-        
-        lndMobileAPI.currentLog("ip is "+getIPAddress()!);
-        
-        // Obtain the path to Application Support
-        let appSupportPath = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.path
-        lndMobileAPI.currentLog("app data path is "+appSupportPath!);
-        self.directoryPath = appSupportPath! + "/lnd"
-        
-        // Get handles to source and destination lnd.conf URLs
-        // let lndSourceURL = Bundle.main.url(forResource: "lnd", withExtension: "conf")
-        
-        
-        let lndDestinationURL = URL(fileURLWithPath: self.directoryPath).appendingPathComponent("lnd.conf", isDirectory: false)
-        
-        // print(lndDestinationURL.path);
-        
-        do {
-            try FileManager.default.removeItem(atPath:lndDestinationURL.path);
-            
-        }
-        catch let error as NSError {
-            lndMobileAPI.currentLog("Failed to delete conf\(error.domain): \(error.code) - \(error.localizedDescription)");
-        }
-        
-        
-        // Check if file and directory. Create/copy as necassary
-        if !FileManager.default.fileExists(atPath: lndDestinationURL.path) {
-            
-            
-            lndMobileAPI.currentLog("deleted old conf");
-            
-            
-            do {
-                if !FileManager.default.fileExists(atPath: self.directoryPath, isDirectory: nil) {
-                    try FileManager.default.createDirectory(atPath: self.directoryPath, withIntermediateDirectories: true)
-                }
-                
-                //  try FileManager.default.copyItem(at: lndSourceURL!, to: lndDestinationURL)
-                //usleep(100000)  // Sleep for 100ms for file to settle
-            } catch CocoaError.fileWriteFileExists {
-                print("lnd.conf already exist at Applicaiton Support/lnd")
-                lndMobileAPI.currentLog("lnd.conf already exist at Applicaiton Support/lnd");
-                
-            } catch {
-                let nsError = error as NSError
-                print("Failed to copy lnd.conf from bundle to Application Support/lnd/lnd.conf.\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-                lndMobileAPI.currentLog("Failed to copy lnd.conf from bundle to Application Support/lnd/lnd.conf.\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)");
-                callback(nil,"Failed to copy lnd.conf from bundle to Application Support/lnd/lnd.conf.\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-                return;
-            }
-            lndMobileAPI.currentLog("conf copied");
-            
-        }else{
-            lndMobileAPI.currentLog("lndconf found");
-            
-        }
-        
-        
-        
-        // Prevent the entire lnd directory from being backed-up
-        var directoryURL = URL(fileURLWithPath: self.directoryPath, isDirectory: true)
-        var resourceValues = URLResourceValues()
-        resourceValues.isExcludedFromBackup = true
-        
-        do {
-            try directoryURL.setResourceValues(resourceValues)
-        } catch {
-            print("Cannot set Resource Value for LND Directory to exclude from Backup")
-            callback(nil,"Cannot set Resource Value for LND Directory to exclude from Backup")
-            return;
-        }
-        
-        // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html for now
-        signal(SIGPIPE, SIG_IGN)
-        
-        
-        if(bootstrap){
-            
-            guard let neutrinoSourceURL = Bundle.main.url(forResource: "neutrino", withExtension: "db",subdirectory:chain) else {
-                lndMobileAPI.currentLog("Cannot get neutrinoSourceURL from Bundle")
-                callback("success",nil)
-                return;
-            }
-            
-            
-            let  neutrinoFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
-            let  neutrinoDestinationURL = neutrinoFolderURL.appendingPathComponent("neutrino.db", isDirectory: false)
-            
-            lndMobileAPI.currentLog(neutrinoDestinationURL.path);
-            
-            // Check if file and directory. Create/copy as necassary
-            if !FileManager.default.fileExists(atPath:  neutrinoDestinationURL.path) {
-                do {
-                    
-                    lndMobileAPI.currentLog("copying neutrino.db");
-                    if !FileManager.default.fileExists(atPath:  neutrinoFolderURL.path, isDirectory: nil) {
-                        try FileManager.default.createDirectory(atPath:  neutrinoFolderURL.path, withIntermediateDirectories: true)
-                    }
-                    try FileManager.default.copyItem(at:  neutrinoSourceURL, to:  neutrinoDestinationURL)
-                    usleep(100000)  // Sleep for 100ms for file to settle
-                    lndMobileAPI.currentLog("copied neutrino.db");
-                    
-                } catch CocoaError.fileWriteFileExists {
-                    lndMobileAPI.currentLog("neutrino.db already exist at \( neutrinoFolderURL.absoluteString)");
-                    
-                    print("neutrino.db already exist at \( neutrinoFolderURL.absoluteString)")
-                } catch {
-                    let nsError = error as NSError
-                    lndMobileAPI.currentLog("Failed to copy neutrino.db from bundle to \( neutrinoDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)");
-                    
-                    print("Failed to copy neutrino.db from bundle to \( neutrinoDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-                }
-            }else{
-                lndMobileAPI.currentLog("not copying neutrino.db");
-                
-            }
-            
-            
-            lndMobileAPI.currentLog("copying block_headers");
-            
-            guard let bhSourceURL = Bundle.main.url(forResource: "block_headers", withExtension: "bin", subdirectory:chain) else {
-                lndMobileAPI.currentLog("Cannot get block_headers from Bundle")
-                callback("success",nil)
-                return;
-            }
-            
-            let  bhFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
-            let  bhDestinationURL = bhFolderURL.appendingPathComponent("block_headers.bin", isDirectory: false)
-            
-            lndMobileAPI.currentLog(bhDestinationURL.path);
-            
-            // Check if file and directory. Create/copy as necassary
-            if !FileManager.default.fileExists(atPath:  bhDestinationURL.path) {
-                do {
-                    if !FileManager.default.fileExists(atPath:  bhFolderURL.path, isDirectory: nil) {
-                        try FileManager.default.createDirectory(atPath:  bhFolderURL.path, withIntermediateDirectories: true)
-                    }
-                    try FileManager.default.copyItem(at:  bhSourceURL, to:  bhDestinationURL)
-                    usleep(100000)  // Sleep for 100ms for file to settle
-                    lndMobileAPI.currentLog("copied block_headers");
-                    
-                } catch CocoaError.fileWriteFileExists {
-                    lndMobileAPI.currentLog("block_headers.bin already exist at \( bhFolderURL.absoluteString)")
-                } catch {
-                    let nsError = error as NSError
-                    lndMobileAPI.currentLog("Failed to copy block_headers.bin from bundle to \(bhDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-                }
-            }
-            
-            lndMobileAPI.currentLog("copying reg_filter_headers");
-            
-            
-            guard let regFilterHeadersSourceURL = Bundle.main.url(forResource: "reg_filter_headers", withExtension: "bin",subdirectory:chain) else {
-                lndMobileAPI.currentLog("Cannot get regFilterHeaders from Bundle")
-                callback("success",nil)
-                return;
-            }
-            
-            let  regFilterHeadersFolderURL = URL(fileURLWithPath: directoryPath).appendingPathComponent("data/chain/bitcoin/"+chain, isDirectory: true)
-            let  regFilterHeadersDestinationURL = regFilterHeadersFolderURL.appendingPathComponent("reg_filter_headers.bin", isDirectory: false)
-            
-            print( regFilterHeadersDestinationURL);
-            // Check if file and directory. Create/copy as necassary
-            if !FileManager.default.fileExists(atPath:  regFilterHeadersDestinationURL.path) {
-                do {
-                    if !FileManager.default.fileExists(atPath: regFilterHeadersFolderURL.path, isDirectory: nil) {
-                        try FileManager.default.createDirectory(atPath: regFilterHeadersFolderURL.path, withIntermediateDirectories: true)
-                    }
-                    try FileManager.default.copyItem(at:  regFilterHeadersSourceURL, to: regFilterHeadersDestinationURL)
-                    usleep(100000)  // Sleep for 100ms for file to settle
-                    lndMobileAPI.currentLog("copied reg_filter_headers");
-                    
-                } catch CocoaError.fileWriteFileExists {
-                    lndMobileAPI.currentLog("reg_filter_headers.bin already exist at \( regFilterHeadersFolderURL.absoluteString)")
-                } catch {
-                    let nsError = error as NSError
-                    lndMobileAPI.currentLog("Failed to copy reg_filter_headers.bin from bundle to \(regFilterHeadersDestinationURL.absoluteString).\(nsError.domain): \(nsError.code) - \(nsError.localizedDescription)")
-                }
-            }
-        }else{
-            lndMobileAPI.currentLog("no bootstrapping");
-        }
-        
-        
-        
-         lndMobileAPI.currentLog("finsihed bootstrap");
-        
-      
-        
-        callback("success",nil)
-        
-        
-        
-        
-    }
-    
     public func lndStart(completion: @escaping (() throws -> ()) -> Void) {
         print("lnd start1")
         // Obtain the path to Application Support
-        let appSupportPath = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.path
-        self.directoryPath = appSupportPath! + "/lnd"
+        self.directoryPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path)!
         
-        LndmobileStart(directoryPath, LndStart(completion))
+        
+        LndmobileStart("--lnddir=" + directoryPath, LndStart(completion))
     }
     
     

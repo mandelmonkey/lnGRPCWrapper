@@ -531,6 +531,76 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
+    @objc public func signMessage(message:String, callback: @escaping (String?,String?) -> Void) {
+        do {
+            
+            var req = Lnrpc_SignMessageRequest();
+            req.msg = message.data(using: .utf8)!
+            
+            _ = try rpc!.signMessage(req) { response, callResult in
+                
+                do{
+                    
+                    if(response == nil){
+                        callback(String(callResult.statusCode.rawValue),callResult.statusMessage)
+                        
+                    }else{
+                        
+                        let res = try response!.jsonString();
+                        
+                        callback(res,nil)
+                    }
+                    
+                }
+                catch{
+                    
+                    callback(nil,error.localizedDescription)
+                }
+                
+                
+                
+            }
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+        }
+    }
+    
+    @objc public func verifyMessage(message:String, signature:String, callback: @escaping (String?,String?) -> Void) {
+        do {
+            
+            var req = Lnrpc_VerifyMessageRequest();
+            req.msg = message.data(using: .utf8)!
+            req.signature = signature;
+            _ = try rpc!.verifyMessage(req) { response, callResult in
+                
+                do{
+                    
+                    if(response == nil){
+                        callback(String(callResult.statusCode.rawValue),callResult.statusMessage)
+                        
+                    }else{
+                        
+                        let res = try response!.jsonString();
+                        
+                        callback(res,nil)
+                    }
+                    
+                }
+                catch{
+                    
+                    callback(nil,error.localizedDescription)
+                }
+                
+                
+                
+            }
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+        }
+    }
+    
     @objc public func lookUpInvoice(rhash:String, callback: @escaping (String?,String?) -> Void) {
         do {
             

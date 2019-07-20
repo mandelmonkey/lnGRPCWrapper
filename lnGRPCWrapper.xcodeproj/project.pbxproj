@@ -6,18 +6,42 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		83BE1A8222E2FFFB0014F625 /* framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 83BE1A8522E2FFFB0014F625 /* Build configuration list for PBXAggregateTarget "framework" */;
+			buildPhases = (
+				83BE1A8822E3005E0014F625 /* ShellScript */,
+			);
+			dependencies = (
+				83BE1A8722E3003A0014F625 /* PBXTargetDependency */,
+			);
+			name = framework;
+			productName = framework;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		003DFE922108C0F2008A62EE /* lnGRPCWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 003DFE902108C0F2008A62EE /* lnGRPCWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		003DFE9B2108CB9C008A62EE /* grpcAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003DFE9A2108CB9C008A62EE /* grpcAPI.swift */; };
 		003DFE9F2108CC3C008A62EE /* rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003DFE9D2108CC3C008A62EE /* rpc.pb.swift */; };
 		003DFEA02108CC3C008A62EE /* rpc.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003DFE9E2108CC3C008A62EE /* rpc.grpc.swift */; };
-		005EEC1021F5FC9700F98980 /* Lndmobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005EEC0F21F5FC9700F98980 /* Lndmobile.framework */; };
 		005EEC1B21F6EAC800F98980 /* lndMobileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005EEC1A21F6EAC800F98980 /* lndMobileAPI.swift */; };
 		8340B7042289E94000C60C89 /* websocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340B7032289E94000C60C89 /* websocket.swift */; };
 		836F46D0227330BA00768B04 /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F46CF227330BA00768B04 /* utils.swift */; };
 		836F470F227343E300768B04 /* OAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F470E227343E300768B04 /* OAuthViewController.swift */; };
 		AA10FB518FAC487E577C91B3 /* Pods_lnGRPCWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EBBDDE9A3E4139EE6D3886 /* Pods_lnGRPCWrapper.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		83BE1A8622E3003A0014F625 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 003DFE842108C0F2008A62EE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 003DFE8C2108C0F2008A62EE;
+			remoteInfo = lnGRPCWrapper;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		003DFE8D2108C0F2008A62EE /* lnGRPCWrapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = lnGRPCWrapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,7 +66,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA10FB518FAC487E577C91B3 /* Pods_lnGRPCWrapper.framework in Frameworks */,
-				005EEC1021F5FC9700F98980 /* Lndmobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +179,9 @@
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 0940;
 					};
+					83BE1A8222E2FFFB0014F625 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 				};
 			};
 			buildConfigurationList = 003DFE872108C0F2008A62EE /* Build configuration list for PBXProject "lnGRPCWrapper" */;
@@ -171,6 +197,7 @@
 			projectRoot = "";
 			targets = (
 				003DFE8C2108C0F2008A62EE /* lnGRPCWrapper */,
+				83BE1A8222E2FFFB0014F625 /* framework */,
 			);
 		};
 /* End PBXProject section */
@@ -186,6 +213,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		83BE1A8822E3005E0014F625 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FRAMEWORK_NAME=\"lnGRPCWrapper\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_BCSYMBOLMAP_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos\"\n\nDEVICE_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework.dSYM\"\nSIMULATOR_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework.dSYM\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nOUTPUT_DIR=\"./lnGRPCWrapper-Aggregated\"\n\nXcodebuild -project ${PROJECT_NAME}.Xcodeproj -scheme ${FRAMEWORK_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean install CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator\n\nXcodebuild -project ${PROJECT_NAME}.Xcodeproj -scheme ${FRAMEWORK_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean install CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n\ncp -r \"${DEVICE_DSYM_PATH}\" \"$OUTPUT_DIR\"\nlipo -create -output \"$OUTPUT_DIR/${FRAMEWORK_NAME}.framework.dSYM/Contents/Resources/DWARF/${FRAMEWORK_NAME}\" \\\n\"${DEVICE_DSYM_PATH}/Contents/Resources/DWARF/${FRAMEWORK_NAME}\" \\\n\"${SIMULATOR_DSYM_PATH}/Contents/Resources/DWARF/${FRAMEWORK_NAME}\" || exit 1\n\nUUIDs=$(dwarfdump --uuid \"${DEVICE_DSYM_PATH}\" | cut -d ' ' -f2)\nfor file in `find \"${DEVICE_BCSYMBOLMAP_PATH}\" -name \"*.bcsymbolmap\" -type f`; do\nfileName=$(basename \"$file\" \".bcsymbolmap\")\nfor UUID in $UUIDs; do\nif [[ \"$UUID\" = \"$fileName\" ]]; then\ncp -R \"$file\" \"$OUTPUT_DIR\"\ndsymutil --symbol-map \"$OUTPUT_DIR\"/\"$fileName\".bcsymbolmap \"$OUTPUT_DIR/${FRAMEWORK_NAME}.framework.dSYM\"\nfi\ndone\ndone\n";
+		};
 		CC6CB6986FEC6F88BB88C1EF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +288,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		83BE1A8722E3003A0014F625 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 003DFE8C2108C0F2008A62EE /* lnGRPCWrapper */;
+			targetProxy = 83BE1A8622E3003A0014F625 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		003DFE932108C0F2008A62EE /* Debug */ = {
@@ -434,6 +486,22 @@
 			};
 			name = Release;
 		};
+		83BE1A8322E2FFFB0014F625 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		83BE1A8422E2FFFB0014F625 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -451,6 +519,15 @@
 			buildConfigurations = (
 				003DFE962108C0F2008A62EE /* Debug */,
 				003DFE972108C0F2008A62EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83BE1A8522E2FFFB0014F625 /* Build configuration list for PBXAggregateTarget "framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83BE1A8322E2FFFB0014F625 /* Debug */,
+				83BE1A8422E2FFFB0014F625 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
