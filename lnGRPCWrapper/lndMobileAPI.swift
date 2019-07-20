@@ -1651,10 +1651,12 @@ extension Data {
     }
     
     public func lndStart(completion: @escaping (() throws -> ()) -> Void) {
-        print("lnd start1")
+    
         // Obtain the path to Application Support
         self.directoryPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path)!
         
+         // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html for now
+        signal(SIGPIPE, SIG_IGN)
         
         LndmobileStart("--lnddir=" + directoryPath, LndStart(completion))
     }
