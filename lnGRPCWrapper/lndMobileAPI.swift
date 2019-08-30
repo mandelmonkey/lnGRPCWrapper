@@ -206,6 +206,35 @@ extension Data {
     }
     
     
+    @objc public func estimateFee(amount:Int64, address:String, targetConf:Int32, callback: @escaping (String?,String?) -> Void) {
+        do {
+            
+            var req = Lnrpc_EstimateFeeRequest()
+            
+            if(amount == -1){
+                req.addrToAmount = [address:10000]; //if fee is -1 it means send all, so set fee to some value
+            }else{
+                req.addrToAmount = [address:amount];
+            }
+            
+            req.targetConf = targetConf;
+            
+            
+            let lndOp = EstimateFee(callback)
+            
+            lndMobileAPI.currentLog("estimate fee");
+            
+            LndmobileEstimateFee(try req.serializedData(), lndOp);
+            
+        }
+        catch{
+            lndMobileAPI.currentLog(error.localizedDescription);
+            currentCallback(nil,error.localizedDescription);
+        }
+        
+    }
+    
+    
     @objc public func startLND(callback: @escaping (String?,String?) -> Void) {
         
         
@@ -458,9 +487,78 @@ extension Data {
         }
     }
     
+    @objc public func addTower(pubkey:String, address:String, callback: @escaping (String?,String?) -> Void) {
+        print("Add tower");
+        do {
+            lndMobileAPI.currentLog("2er");
+            var req = Wtclientrpc_AddTowerRequest();
+            
+            guard let nodePubKeyData = Data(hexString: pubkey) else {
+                lndMobileAPI.currentLog("Node Pub Key should have been validated ahead of time")
+                return;
+            }
+            
+            req.pubkey = nodePubKeyData;
+            req.address = address;
+            
+            
+            let lndOp = AddTower(callback)
+            lndMobileAPI.currentLog("adding tower res");
+            LndmobileAddTower(try req.serializedData(), lndOp);
+            
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+            
+        }
+    }
+    
+    @objc public func listTowers(callback: @escaping (String?,String?) -> Void) {
+        print("list tower");
+        do {
+            lndMobileAPI.currentLog("list tower");
+            let req = Wtclientrpc_ListTowersRequest();
+            
+            let lndOp = ListTowers(callback)
+            lndMobileAPI.currentLog("list towers res");
+            LndmobileListTowers(try req.serializedData(), lndOp);
+            
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+            
+        }
+    }
+    
+    @objc public func getTowerInfo(pubkey:String, callback: @escaping (String?,String?) -> Void) {
+        print("get tower info");
+        do {
+            lndMobileAPI.currentLog("get tower info");
+            var req = Wtclientrpc_GetTowerInfoRequest();
+            
+            guard let nodePubKeyData = Data(hexString: pubkey) else {
+                lndMobileAPI.currentLog("Node Pub Key should have been validated ahead of time")
+                return;
+            }
+            
+            req.pubkey = nodePubKeyData;
+            
+            let lndOp = GetTowerInfo(callback)
+            lndMobileAPI.currentLog("get tower info res");
+            LndmobileGetTowerInfo(try req.serializedData(), lndOp);
+            
+        } catch {
+            
+            callback(nil,error.localizedDescription)
+            
+        }
+    }
+    
     
     @objc public func connectPeer(host:String, pubkey:String,  callback: @escaping (String?,String?) -> Void) {
         
+        
+       
         do {
             lndMobileAPI.currentLog("connecting peer");
             var req = Lnrpc_ConnectPeerRequest();
@@ -537,8 +635,9 @@ extension Data {
             
         }
     }
-    /*
-    @objc public func sendPaymentSync(paymentRequest:String,amount:Int64, callback: @escaping (String?,String?) -> Void) {
+    
+    
+    @objc public func sendPayment(paymentRequest:String,amount:Int64, feeLimit:Int64, callback: @escaping (String?,String?) -> Void) {
         do {
             var req = Lnrpc_SendRequest();
             req.paymentRequest = paymentRequest;
@@ -546,25 +645,10 @@ extension Data {
                 req.amt = amount;
             }
             
-            let lndOp = SendPayment(callback)
-            lndMobileAPI.currentLog("send payment");
-            
-            LndmobileSendPaymentSync(try req.serializedData(), lndOp);
-            
-        } catch {
-            
-            callback(nil,error.localizedDescription)
-            
-        }
-        
-    }*/
-    
-    @objc public func sendPayment(paymentRequest:String,amount:Int64, callback: @escaping (String?,String?) -> Void) {
-        do {
-            var req = Lnrpc_SendRequest();
-            req.paymentRequest = paymentRequest;
-            if(amount != -1){
-                req.amt = amount;
+            if(feeLimit != -1){
+                var feeLimitObj = Lnrpc_FeeLimit();
+                feeLimitObj.percent = feeLimit;
+                req.feeLimit = feeLimitObj;
             }
             
             let lndOp = SendPayment(callback)
@@ -739,6 +823,32 @@ extension Data {
             lndMobileAPI.currentLog("send coins log");
             do {
                 let response = try  Lnrpc_SendCoinsResponse(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
+    private class EstimateFee: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            lndMobileAPI.currentLog("estimate fee log");
+            do {
+                let response = try  Lnrpc_EstimateFeeResponse(serializedData: p0)
                 let res = try response.jsonString();
                 
                 completion( res,nil)
@@ -1129,6 +1239,110 @@ extension Data {
             do {
                 
                 let response = try  Lnrpc_ConnectPeerResponse(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
+    private class AddTower: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            print("add tower")
+            
+            guard p0 != nil else {
+                
+                completion("success",nil); //connect peer doesnt return any data
+                return
+            }
+            
+            do {
+                
+                let response = try  Wtclientrpc_AddTowerResponse(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
+    private class GetTowerInfo: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            print("get tower info")
+            
+            guard p0 != nil else {
+                
+                completion("success",nil); //connect peer doesnt return any data
+                return
+            }
+            
+            do {
+                
+                let response = try  Wtclientrpc_Tower(serializedData: p0)
+                let res = try response.jsonString();
+                
+                completion( res,nil)
+            } catch {
+                completion(nil,error.localizedDescription)
+            }
+        }
+        
+        func onError(_ p0: Error!) {
+            completion(nil,p0.localizedDescription)
+        }
+    }
+    
+    
+    
+    private class ListTowers: NSObject, LndmobileCallbackProtocol {
+        private var completion:((String?,String?) -> (Void));
+        
+        
+        init(_ completion: @escaping (String?,String?) -> Void) {
+            
+            self.completion = completion
+        }
+        
+        func onResponse(_ p0: Data!) {
+            print("connect peer")
+            
+            guard p0 != nil else {
+                
+                completion("success",nil); //connect peer doesnt return any data
+                return
+            }
+            
+            do {
+                
+                let response = try  Wtclientrpc_ListTowersResponse(serializedData: p0)
                 let res = try response.jsonString();
                 
                 completion( res,nil)
@@ -1578,7 +1792,7 @@ extension Data {
         }
         
         func onResponse(_ p0: Data!) {
-            print("LN Stop Daemon Success!")
+            print("getting info")
             
             do {
                 let response = try Lnrpc_GetInfoResponse(serializedData: p0)
@@ -1655,7 +1869,7 @@ extension Data {
         // Obtain the path to Application Support
         self.directoryPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path)!
         
-         // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html for now
+         // BTCD can throw SIGPIPEs. Ignoring according to https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/CommonPitfalls/CommonPitfalls.html
         signal(SIGPIPE, SIG_IGN)
         
         LndmobileStart("--lnddir=" + directoryPath, LndStart(completion))

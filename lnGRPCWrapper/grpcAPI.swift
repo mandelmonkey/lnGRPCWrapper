@@ -379,12 +379,18 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
-    @objc public func sendPayment(paymentRequest:String, amount:Int64, callback: @escaping (String?,String?) -> Void) {
+    @objc public func sendPayment(paymentRequest:String, amount:Int64, feeLimit:Int64, callback: @escaping (String?,String?) -> Void) {
         
             var req = Lnrpc_SendRequest();
             req.paymentRequest = paymentRequest;
         if(amount != -1){
             req.amt = amount;
+        }
+        
+        if(feeLimit != -1){
+            var feeLimitObj = Lnrpc_FeeLimit();
+            feeLimitObj.percent = feeLimit;
+            req.feeLimit = feeLimitObj;
         }
             do {
                 
@@ -866,6 +872,51 @@ private extension Lnrpc_LightningServiceClient {
             
             callback(nil,error.localizedDescription)
         }
+    }
+    
+    @objc public func estimateFee(amount:Int64, address:String, targetConf:Int32, callback: @escaping (String?,String?) -> Void) {
+        do {
+            
+            var req = Lnrpc_EstimateFeeRequest()
+            
+            if(amount == -1){
+                req.addrToAmount = [address:10000]; //if fee is -1 it means send all, so set fee to some value
+            }else{
+                req.addrToAmount = [address:amount];
+            }
+            
+            req.targetConf = targetConf;
+            
+            _ = try rpc!.estimateFee(req) { response, callResult in
+                
+                do{
+                    
+                    if(response == nil){
+                        callback(String(callResult.statusCode.rawValue), callResult.statusMessage)
+                        
+                    }else{
+                        
+                        let res = try response!.jsonString();
+                        
+                        callback(res,nil)
+                    }
+                    
+                }
+                catch{
+                    
+                    callback(nil,error.localizedDescription)
+                }
+                
+                
+                
+            }
+            
+        }
+        catch{
+            lndMobileAPI.currentLog(error.localizedDescription);
+            callback(nil,error.localizedDescription)
+        }
+        
     }
             
     

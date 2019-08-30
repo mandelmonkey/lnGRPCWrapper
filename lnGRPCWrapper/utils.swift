@@ -42,38 +42,40 @@ import Foundation
         self.currentLog("starting drive");
         oauthVC = OAuthViewController(log: currentLog, clientID:clientID, folderName: folderName, fileName: fileName,passphraseHash:passphraseHash, callback:callback);
         oauthVC.setMode(theMode: "upload");
-        self.currentLog("starting drive1");
-        oauthVC.view.backgroundColor = .blue
-        self.currentLog("starting drive2");
+        setView(oauthVC: oauthVC,vc: vc);
+    }
+    
+    func setView(oauthVC:OAuthViewController,vc:UIViewController){
+        oauthVC.view.backgroundColor = .clear
+        oauthVC.view.isHidden = true;
+        oauthVC.view.isOpaque = true;
+        oauthVC.modalPresentationStyle = .overCurrentContext
+        oauthVC.view.isUserInteractionEnabled = false;
+        vc.modalPresentationStyle = .overCurrentContext
         vc.present(oauthVC, animated: true, completion: nil)
-        self.currentLog("starting drive3");
+        
     }
     
     @objc public func linkGoogleDrive(vc:UIViewController,clientID:String,callback: @escaping (String?,String?) -> Void) {
         self.currentLog("starting drive");
         oauthVC = OAuthViewController(log: currentLog, clientID:clientID, folderName: "", fileName: "",passphraseHash:"", callback:callback);
         oauthVC.setMode(theMode: "link");
-        self.currentLog("starting drive1");
-        oauthVC.view.backgroundColor = .blue
-        self.currentLog("starting drive2");
-        vc.present(oauthVC, animated: true, completion: nil)
-        self.currentLog("starting drive3");
+        setView(oauthVC: oauthVC,vc: vc);
     }
     
     @objc public func downloadFile(vc:UIViewController,clientID:String,folderName:String,fileName:String, passphraseHash:String, callback: @escaping (String?,String?) -> Void) {
         self.currentLog("starting drive");
         oauthVC = OAuthViewController(log: currentLog, clientID:clientID, folderName: folderName, fileName: fileName, passphraseHash:passphraseHash, callback:callback);
         oauthVC.setMode(theMode: "download");
-        self.currentLog("starting drive1");
-        oauthVC.view.backgroundColor = .blue
-        self.currentLog("starting drive2");
-        vc.present(oauthVC, animated: true, completion: nil)
-        self.currentLog("starting drive3");
+        setView(oauthVC: oauthVC,vc: vc);
     }
     
     @objc public func signOut() {
         self.currentLog("signing out");
        oauthVC.signOut()
+        oauthVC.dismiss(animated: true) {
+            
+        }
     }
 
 

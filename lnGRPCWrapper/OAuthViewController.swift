@@ -11,7 +11,22 @@ import GoogleSignIn
 import GoogleAPIClientForREST
 
 import GTMSessionFetcher
-
+class TouchDelegatingView: UIView {
+    weak var touchDelegate: UIView? = nil
+    
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard let view = super.hitTest(point, with: event) else {
+            return nil
+        }
+        
+        guard view === self, let point = touchDelegate?.convert(point, from: self) else {
+            return view
+        }
+        
+        return touchDelegate?.hitTest(point, with: event)
+    }
+}
 extension OAuthViewController: GIDSignInDelegate, GIDSignInUIDelegate {
     
     public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -24,6 +39,9 @@ extension OAuthViewController: GIDSignInDelegate, GIDSignInUIDelegate {
             
             if(self.mode == "link"){
                 self.currentCallback("linked",nil);
+                self.dismiss(animated: true) {
+                    
+                }
             }
             else{
              populateFolderID()
@@ -35,6 +53,9 @@ extension OAuthViewController: GIDSignInDelegate, GIDSignInUIDelegate {
              self.googleDriveService.authorizer = nil
              self.googleUser = nil
             self.currentCallback(nil,"file upload error");
+            self.dismiss(animated: true) {
+                
+            }
             
         }
         // ...
@@ -75,6 +96,7 @@ class OAuthViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         self.currentCallback = {(res, error) in}
         super.init(coder: aDecoder)
+        self.view.isHidden = true;
     }
     
     func setMode(theMode:String){
@@ -93,10 +115,16 @@ class OAuthViewController: UIViewController {
         GIDSignIn.sharedInstance()?.scopes =
             [kGTLRAuthScopeDriveFile]
         self.currentLog("start sign in");
-        GIDSignIn.sharedInstance()?.signIn();
+        GIDSignIn.sharedInstance()?.signIn()
         
         self.currentLog("got past here");
- 
+        
+        if let delegatingView = view as? TouchDelegatingView {
+            delegatingView.touchDelegate = presentingViewController?.view
+        }
+        self.dismiss(animated: true) {
+            
+        }
     }
     func populateFolderID() {
          self.currentLog("starting folder "+self.folderName!);
@@ -109,6 +137,9 @@ class OAuthViewController: UIViewController {
                     
                     if(self.mode == "download"){
                          self.currentCallback(nil,"file not found");
+                        self.dismiss(animated: true) {
+                            
+                        }
                     }
                     else if(self.mode == "upload"){
                     self.createFolder(
@@ -177,6 +208,10 @@ class OAuthViewController: UIViewController {
             } else {
                 self.currentLog("google drive file does not exist "+fileURL.path);
                   self.currentCallback(nil,"file upload error");
+               
+                self.dismiss(animated: true) {
+                    
+                }
             }
             
             
@@ -184,6 +219,9 @@ class OAuthViewController: UIViewController {
         } catch {
             self.currentLog("google drive error");
               self.currentCallback(nil,"file upload error");
+            self.dismiss(animated: true) {
+                
+            }
         }
         
     }
@@ -230,6 +268,9 @@ class OAuthViewController: UIViewController {
             if let error = error {
                 self.currentLog("delete channel backup error "+error.localizedDescription);
                 self.currentCallback(nil,"file upload error");
+                self.dismiss(animated: true) {
+                    
+                }
                 return
             }
             
@@ -263,6 +304,9 @@ class OAuthViewController: UIViewController {
                 
                 self.currentLog("channel backup error "+error!.localizedDescription);
                  self.currentCallback(nil,"file upload error");
+                self.dismiss(animated: true) {
+                    
+                }
                 return;
                 //fatalError(error!.localizedDescription)
             }
@@ -290,6 +334,9 @@ class OAuthViewController: UIViewController {
             guard error == nil else {
                 self.currentLog("channel backup error "+error!.localizedDescription);
                  self.currentCallback(nil,"file upload error");
+                self.dismiss(animated: true) {
+                    
+                }
                 return;
                // fatalError(error!.localizedDescription)
             }
@@ -314,6 +361,9 @@ class OAuthViewController: UIViewController {
                         self.googleDriveService.executeQuery(query) { (ticket, dfile, error) in
                             if(error != nil){
                                 self.currentCallback(nil,"file download error");
+                                self.dismiss(animated: true) {
+                                    
+                                }
                                 
                                 return;
                             }
@@ -332,6 +382,9 @@ class OAuthViewController: UIViewController {
                                
                                 
                                 self.currentCallback(text,nil);
+                                self.dismiss(animated: true) {
+                                    
+                                }
                                 
                                 
                             
@@ -339,6 +392,9 @@ class OAuthViewController: UIViewController {
                             }
                             catch{
                                 self.currentCallback(nil,error.localizedDescription);
+                                self.dismiss(animated: true) {
+                                    
+                                }
                                 
                                 
                             
@@ -354,6 +410,9 @@ class OAuthViewController: UIViewController {
             }
             
             self.currentCallback(nil,"file not found");
+            self.dismiss(animated: true) {
+                
+            }
             
         }
         
@@ -406,12 +465,18 @@ class OAuthViewController: UIViewController {
                 guard error == nil else {
                     self.currentLog("channel backup error"+error!.localizedDescription);
                     self.currentCallback(nil,"file upload error");
+                    self.dismiss(animated: true) {
+                        
+                    }
                     //fatalError(error!.localizedDescription)
                     return;
                 }
                 
                 self.currentLog("channel backup success");
                 self.currentCallback("file uploaded",nil);
+                self.dismiss(animated: true) {
+                    
+                }
                 
                 // Successful upload if no error is returned.
             }
