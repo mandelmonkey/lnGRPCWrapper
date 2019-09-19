@@ -32,6 +32,7 @@
 		8340FD1423186873001A1636 /* wtclient.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340FD1223186873001A1636 /* wtclient.grpc.swift */; };
 		836F46D0227330BA00768B04 /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F46CF227330BA00768B04 /* utils.swift */; };
 		836F470F227343E300768B04 /* OAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F470E227343E300768B04 /* OAuthViewController.swift */; };
+		83C8CB8A2327C9C000A263FB /* Lndmobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005EEC0F21F5FC9700F98980 /* Lndmobile.framework */; };
 		AA10FB518FAC487E577C91B3 /* Pods_lnGRPCWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EBBDDE9A3E4139EE6D3886 /* Pods_lnGRPCWrapper.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA10FB518FAC487E577C91B3 /* Pods_lnGRPCWrapper.framework in Frameworks */,
+				83C8CB8A2327C9C000A263FB /* Lndmobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,20 +244,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-lnGRPCWrapper/Pods-lnGRPCWrapper-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-lnGRPCWrapper/Pods-lnGRPCWrapper-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-lnGRPCWrapper/Pods-lnGRPCWrapper-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-lnGRPCWrapper/Pods-lnGRPCWrapper-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lnGRPCWrapper/Pods-lnGRPCWrapper-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FB10E2A8770365711D4E017C /* [CP] Check Pods Manifest.lock */ = {

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+DIR_SIMULATOR="./Build/Products/Debug-iphonesimulator"
+DIR_DEVICE="./Build/Products/Debug-iphoneos"
+NAYUTA_DIR="../nayuta/app/platform/ios";
+
+echo "Cleaning project..."
+
+xcodebuild clean -workspace lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper
+
+
+echo "Building for simulator..."
+
+xcodebuild -workspace ./lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug -sdk iphonesimulator
+
+
+echo "Building for device..."
+
+xcodebuild -workspace ./lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug
+
+echo "Creating FAT libraries..."
+
+rm -rf "./FATLIB" 
+
+mkdir "./FATLIB" 
+ 
+function copyFunc {
+        echo 'create FAT library for' "$1"'/'"$2"
+        cp -r $DIR_SIMULATOR/"$1"/"$2" FATLIB/"$2"
+        lipo -create $DIR_SIMULATOR/"$1"/"$2"/"$3" $DIR_DEVICE/"$1"/"$2"/"$3" -output FATLIB/"$2"/"$3"
+        /usr/libexec/PlistBuddy -c "delete :CFBundleSupportedPlatforms" FATLIB/"$2"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms array" FATLIB/"$2"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string iPhoneOS" FATLIB/"$2"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string 'iPhoneSimulator'" FATLIB/"$2"/Info.plist
+  } 
+ 
+copyFunc  'BoringSSL' 'openssl.framework' 'openssl'
+copyFunc  'GoogleAPIClientForREST' 'GoogleAPIClientForREST.framework' 'GoogleAPIClientForREST'
+copyFunc  'GoogleToolboxForMac' 'GoogleToolboxForMac.framework' 'GoogleToolboxForMac'
+copyFunc  'gRPC-Core' 'grpc.framework' 'grpc'
+copyFunc  'GTMSessionFetcher' 'GTMSessionFetcher.framework' 'GTMSessionFetcher' 
+copyFunc  '' 'lnGRPCWrapper.framework' 'lnGRPCWrapper'
+copyFunc  'nanopb' 'nanopb.framework' 'nanopb'
+copyFunc  'Starscream' 'Starscream.framework' 'Starscream'
+copyFunc  'SwiftGRPC' 'SwiftGRPC.framework' 'SwiftGRPC'
+copyFunc  'SwiftProtobuf' 'SwiftProtobuf.framework' 'SwiftProtobuf'
+
+                  
+
+if [ -d "$NAYUTA_DIR" ]; then
+  
+  echo "moving files to  ${NAYUTA_DIR}"
+
+  cp -r FATLIB/* ../nayuta/app/platform/ios/
+        
+ else
+   
+   echo "unable to move files to ${NAYUTA_DIR}"
+   exit 1
+
+ fi
+                
+echo "complete"
+
+exit 1
+
+               
