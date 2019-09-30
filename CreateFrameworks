@@ -1,49 +1,87 @@
 #!/bin/bash
 
-DIR_SIMULATOR="./Build/Products/Debug-iphonesimulator"
-DIR_DEVICE="./Build/Products/Debug-iphoneos"
+DIR_SIMULATOR="/Build/Products/Debug-iphonesimulator"
+DIR_DEVICE="/Build/Products/Debug-iphoneos"
 NAYUTA_DIR="../nayuta/app/platform/ios";
 
-echo "Cleaning project..."
 
-xcodebuild clean -workspace lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper
+echo "Cleaning ioscrypto project..."
 
-
-echo "Building for simulator..."
-
-xcodebuild -workspace ./lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug -sdk iphonesimulator
+xcodebuild clean -project ../ioscrypto/ioscrypto.xcodeproj -scheme ioscrypto
 
 
-echo "Building for device..."
+echo "Building ioscrypto for simulator..."
 
-xcodebuild -workspace ./lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug
+xcodebuild -project ../ioscrypto/ioscrypto.xcodeproj -scheme ioscrypto -configuration Debug -sdk iphonesimulator
+
+
+echo "Building ioscrypto for device..."
+
+xcodebuild -project ../ioscrypto/ioscrypto.xcodeproj -scheme ioscrypto -configuration Debug -sdk iphoneos -destination generic/platform=iOS
+
+
+
+echo "Cleaning web3 project..."
+
+xcodebuild clean -project ../web3/web3.xcodeproj -scheme web3
+
+
+echo "Building web3 for simulator..."
+
+xcodebuild -project ../web3/web3.xcodeproj -scheme web3 -configuration Debug -sdk iphonesimulator
+
+
+echo "Building web3 for device..."
+
+xcodebuild -project ../web3/web3.xcodeproj -scheme web3 -configuration Debug -sdk iphoneos -destination generic/platform=iOS
+
+
+echo "Cleaning lnGRPCWrapper project..."
+
+xcodebuild clean -workspace ../lnGRPCWrapper/lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper
+
+
+echo "Building lnGRPCWrapper for simulator..."
+
+xcodebuild -workspace ../lnGRPCWrapper/lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug -sdk iphonesimulator
+
+
+echo "Building lnGRPCWrapper for device..."
+
+xcodebuild -workspace ../lnGRPCWrapper/lnGRPCWrapper.xcworkspace -scheme lnGRPCWrapper -configuration Debug -sdk iphoneos -destination generic/platform=iOS
+
 
 echo "Creating FAT libraries..."
 
 rm -rf "./FATLIB" 
 
 mkdir "./FATLIB" 
- 
+
 function copyFunc {
-        echo 'create FAT library for' "$1"'/'"$2"
-        cp -r $DIR_SIMULATOR/"$1"/"$2" FATLIB/"$2"
-        lipo -create $DIR_SIMULATOR/"$1"/"$2"/"$3" $DIR_DEVICE/"$1"/"$2"/"$3" -output FATLIB/"$2"/"$3"
-        /usr/libexec/PlistBuddy -c "delete :CFBundleSupportedPlatforms" FATLIB/"$2"/Info.plist
-        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms array" FATLIB/"$2"/Info.plist
-        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string iPhoneOS" FATLIB/"$2"/Info.plist
-        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string 'iPhoneSimulator'" FATLIB/"$2"/Info.plist
+        echo 'create FAT library for' "$2"'/'"$3"
+       
+   cp -r "$1"$DIR_SIMULATOR/"$2"/"$3" FATLIB/"$3" 
+    lipo -create "$1"$DIR_SIMULATOR/"$2"/"$3"/"$4" "$1"$DIR_DEVICE/"$2"/"$3"/"$4" -output FATLIB/"$3"/"$4"
+        
+        /usr/libexec/PlistBuddy -c "delete :CFBundleSupportedPlatforms" FATLIB/"$3"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms array" FATLIB/"$3"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string iPhoneOS" FATLIB/"$3"/Info.plist
+        /usr/libexec/PlistBuddy -c "add :CFBundleSupportedPlatforms: string 'iPhoneSimulator'" FATLIB/"$3"/Info.plist
   } 
  
-copyFunc  'BoringSSL' 'openssl.framework' 'openssl'
-copyFunc  'GoogleAPIClientForREST' 'GoogleAPIClientForREST.framework' 'GoogleAPIClientForREST'
-copyFunc  'GoogleToolboxForMac' 'GoogleToolboxForMac.framework' 'GoogleToolboxForMac'
-copyFunc  'gRPC-Core' 'grpc.framework' 'grpc'
-copyFunc  'GTMSessionFetcher' 'GTMSessionFetcher.framework' 'GTMSessionFetcher' 
-copyFunc  '' 'lnGRPCWrapper.framework' 'lnGRPCWrapper'
-copyFunc  'nanopb' 'nanopb.framework' 'nanopb'
-copyFunc  'Starscream' 'Starscream.framework' 'Starscream'
-copyFunc  'SwiftGRPC' 'SwiftGRPC.framework' 'SwiftGRPC'
-copyFunc  'SwiftProtobuf' 'SwiftProtobuf.framework' 'SwiftProtobuf'
+  
+copyFunc  '../lnGRPCWrapper' 'BoringSSL' 'openssl.framework' 'openssl'
+copyFunc  '../lnGRPCWrapper' 'GoogleAPIClientForREST' 'GoogleAPIClientForREST.framework' 'GoogleAPIClientForREST'
+copyFunc  '../lnGRPCWrapper' 'GoogleToolboxForMac' 'GoogleToolboxForMac.framework' 'GoogleToolboxForMac'
+copyFunc  '../lnGRPCWrapper' 'gRPC-Core' 'grpc.framework' 'grpc'
+copyFunc  '../lnGRPCWrapper' 'GTMSessionFetcher' 'GTMSessionFetcher.framework' 'GTMSessionFetcher' 
+copyFunc  '../lnGRPCWrapper' '' 'lnGRPCWrapper.framework' 'lnGRPCWrapper'
+copyFunc  '../lnGRPCWrapper' 'nanopb' 'nanopb.framework' 'nanopb'
+copyFunc  '../lnGRPCWrapper' 'Starscream' 'Starscream.framework' 'Starscream'
+copyFunc  '../lnGRPCWrapper' 'SwiftGRPC' 'SwiftGRPC.framework' 'SwiftGRPC'
+copyFunc  '../lnGRPCWrapper' 'SwiftProtobuf' 'SwiftProtobuf.framework' 'SwiftProtobuf'
+copyFunc  '../ioscrypto' '' 'ioscrypto.framework' 'ioscrypto'
+copyFunc  '../web3' '' 'web3.framework' 'web3'
 
                   
 
