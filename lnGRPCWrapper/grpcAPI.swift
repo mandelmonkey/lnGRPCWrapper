@@ -499,14 +499,14 @@ private extension Lnrpc_LightningServiceClient {
         }
     }
     
-    @objc public func addInvoice(amount:Int64, expiry:Int64, memo:String, callback: @escaping (String?,String?) -> Void) {
+    @objc public func addInvoice(amount:Int64, expiry:Int64, memo:String, isPrivate:Bool,  callback: @escaping (String?,String?) -> Void) {
         do {
             
             var req = Lnrpc_Invoice();
             req.value = amount;
             req.memo = memo;
             req.expiry = expiry;
-            
+            req.private = isPrivate;
             
             _ = try rpc!.addInvoice(req) { response, callResult in
                 
