@@ -513,7 +513,7 @@ extension Data {
         }
     }
     
-     @objc public func decodeAezeed(passphrase:String) -> Void {
+     @objc public func decodeAezeed(passphrase:String) -> String {
          
           return LndmobileDecodeAezeed(passphrase)
            
