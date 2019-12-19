@@ -513,6 +513,12 @@ extension Data {
         }
     }
     
+     @objc public func decodeAezeed(passphrase:String) -> Void {
+         
+          return LndmobileDecodeAezeed(passphrase)
+           
+     }
+    
     @objc public func listTowers(callback: @escaping (String?,String?) -> Void) {
         print("list tower");
         do {
@@ -1896,6 +1902,7 @@ extension Data {
         }
         return bytes
     }
+    
     
     
     
